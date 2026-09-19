@@ -3,9 +3,41 @@ import plotly.express as px
 import streamlit as st
 
 st.set_page_config(
-    page_title="Parent–Child Bonds and Independence",
-    page_icon="🏡",
-    layout="wide"
+    st.markdown(
+    """
+    <style>
+    /* Top navigation bar */
+    [data-testid="stTopNav"] {
+        background-color: #D6E7DC;
+        border-bottom: 3px solid #5E907E;
+        padding: 0.35rem 0.75rem;
+    }
+
+    /* All navigation links */
+    [data-testid="stTopNav"] a {
+        border-radius: 10px;
+        padding: 0.45rem 0.8rem;
+        transition: all 0.2s ease;
+    }
+
+    /* Hovered navigation link */
+    [data-testid="stTopNav"] a:hover {
+        background-color: #B8D3C2;
+    }
+
+    /* Currently selected page */
+    [data-testid="stTopNav"] a[aria-current="page"] {
+        background-color: #2F7668 !important;
+        box-shadow: 0 2px 8px rgba(47, 118, 104, 0.25);
+    }
+
+    [data-testid="stTopNav"] a[aria-current="page"] p {
+        color: white !important;
+        font-weight: 700 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
 )
 
 # Website styling
