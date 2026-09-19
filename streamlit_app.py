@@ -2,8 +2,17 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
 st.set_page_config(
-    st.markdown(
+    page_title="Parent–Child Bonds and Independence",
+    page_icon="🌿",
+    layout="wide"
+)
+
+st.markdown(
     """
     <style>
     /* Top navigation bar */
@@ -13,19 +22,16 @@ st.set_page_config(
         padding: 0.35rem 0.75rem;
     }
 
-    /* All navigation links */
     [data-testid="stTopNav"] a {
         border-radius: 10px;
         padding: 0.45rem 0.8rem;
         transition: all 0.2s ease;
     }
 
-    /* Hovered navigation link */
     [data-testid="stTopNav"] a:hover {
         background-color: #B8D3C2;
     }
 
-    /* Currently selected page */
     [data-testid="stTopNav"] a[aria-current="page"] {
         background-color: #2F7668 !important;
         box-shadow: 0 2px 8px rgba(47, 118, 104, 0.25);
