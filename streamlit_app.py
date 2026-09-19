@@ -208,8 +208,7 @@ def data_prep_eda():
     - [American Community Survey API](https://www.census.gov/data/developers/data-sets/acs-1year.html)
     - [Raw Census API data](https://github.com/swejal22/parent-child-independence-project/blob/main/census_acs_2024_raw.csv)
     - [Clean Census data](https://github.com/swejal22/parent-child-independence-project/blob/main/census_acs_2024_living_arrangements_clean.csv)
-    - [Complete Python notebook](https://github.com/swejal22/parent-child-independence-project/blob/main/01_Load_and_Filter_Pew_Data.ipynb)
-
+    - [Census API collection and cleaning notebook](https://github.com/swejal22/parent-child-independence-project/blob/main/02_Census_API_Fetch.ipynb)
     The 2024 ACS one-year API was used to collect state-level estimates for people
     ages 18–34 who lived alone, lived with a spouse, lived with an unmarried
     partner, or lived as a child of the householder. Puerto Rico was excluded so
@@ -234,16 +233,16 @@ def data_prep_eda():
     """)
     st.subheader("Code and Reproducibility")
 
-    st.markdown(
-        """
-        The complete Python code used to collect, clean, validate, and prepare
-        both datasets is available in the
-        [GitHub data-preparation notebook](https://github.com/swejal22/parent-child-independence-project/blob/main/01_Load_and_Filter_Pew_Data.ipynb).
+    st.markdown("""
+    The Python workflows used for data collection and preparation are available
+    in the following notebooks:
 
-        The work was completed in Python using pandas, NumPy, requests, and
-        Plotly.
-        """
-    )
+    - [Pew data filtering notebook](https://github.com/swejal22/parent-child-independence-project/blob/main/01_Load_and_Filter_Pew_Data.ipynb)
+    - [Census API collection and cleaning notebook](https://github.com/swejal22/parent-child-independence-project/blob/main/02_Census_API_Fetch.ipynb)
+
+    The analysis was completed in Python using pandas, NumPy, requests, and
+    Plotly.
+    """)
 
     st.header("Data Cleaning and Preparation")
 
