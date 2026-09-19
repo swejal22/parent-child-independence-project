@@ -209,6 +209,7 @@ def data_prep_eda():
     - [Raw Census API data](https://github.com/swejal22/parent-child-independence-project/blob/main/census_acs_2024_raw.csv)
     - [Clean Census data](https://github.com/swejal22/parent-child-independence-project/blob/main/census_acs_2024_living_arrangements_clean.csv)
     - [Census API collection and cleaning notebook](https://github.com/swejal22/parent-child-independence-project/blob/main/02_Census_API_Fetch.ipynb)
+    
     The 2024 ACS one-year API was used to collect state-level estimates for people
     ages 18–34 who lived alone, lived with a spouse, lived with an unmarried
     partner, or lived as a child of the householder. Puerto Rico was excluded so
