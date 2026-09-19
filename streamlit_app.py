@@ -15,23 +15,23 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Entire upper navigation toolbar */
+    /* Light sage navigation toolbar */
     header[data-testid="stHeader"] {
-        background-color: #2F7668 !important;
-        border-bottom: 4px solid #1F5147 !important;
+        background-color: #A8CCB9 !important;
+        border-bottom: 3px solid #78A48F !important;
     }
 
     /* Navigation labels and toolbar icons */
     header[data-testid="stHeader"] p,
     header[data-testid="stHeader"] span,
     header[data-testid="stHeader"] svg {
-        color: white !important;
-        fill: white !important;
+        color: #18352F !important;
+        fill: #18352F !important;
     }
 
     /* Selected page */
     header[data-testid="stHeader"] a[aria-current="page"] {
-        background-color: #D9EADF !important;
+        background-color: #F2F7F3 !important;
         border-radius: 9px !important;
     }
 
@@ -40,9 +40,9 @@ st.markdown(
         font-weight: 700 !important;
     }
 
-    /* Navigation hover */
+    /* Hover effect */
     header[data-testid="stHeader"] a:hover {
-        background-color: #4E8978 !important;
+        background-color: #91BAA6 !important;
         border-radius: 9px !important;
     }
     </style>
