@@ -113,7 +113,9 @@ def introduction():
     maturity or responsibility. It may provide stability while a person completes school,
     begins a career, saves money, or manages an unexpected difficulty. Understanding
     independence therefore requires attention to both material circumstances and the
-    relationships connecting young adults with their parents.
+    relationships connecting young adults with their parents.These changing pathways 
+    demonstrate why independence should be understood as a gradual and highly individual 
+    transition rather than a single universal milestone.
     """)
 
     st.image(
