@@ -232,7 +232,7 @@ def data_prep_eda():
     status, validated, cleaned, and saved as CSV files. The API key was entered
     securely during execution and was not stored in the notebook or repository.
     """)
-        st.subheader("Code and Reproducibility")
+    st.subheader("Code and Reproducibility")
 
     st.markdown(
         """
