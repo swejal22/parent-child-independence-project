@@ -846,56 +846,125 @@ def data_prep_eda():
     """)
 
 
-    # ---------------------------------------------------------
-    # FIGURE 8 — Box plot with individual state points
+        # ---------------------------------------------------------
+    # FIGURE 8 — U.S. state map
     # ---------------------------------------------------------
 
     st.subheader(
-        "Figure 8. State Variation in Young Adults Living Alone"
+        "Figure 8. Percentage of Young Adults Living Alone Across U.S. States"
     )
+
+    state_abbreviations = {
+        "Alabama": "AL",
+        "Alaska": "AK",
+        "Arizona": "AZ",
+        "Arkansas": "AR",
+        "California": "CA",
+        "Colorado": "CO",
+        "Connecticut": "CT",
+        "Delaware": "DE",
+        "District of Columbia": "DC",
+        "Florida": "FL",
+        "Georgia": "GA",
+        "Hawaii": "HI",
+        "Idaho": "ID",
+        "Illinois": "IL",
+        "Indiana": "IN",
+        "Iowa": "IA",
+        "Kansas": "KS",
+        "Kentucky": "KY",
+        "Louisiana": "LA",
+        "Maine": "ME",
+        "Maryland": "MD",
+        "Massachusetts": "MA",
+        "Michigan": "MI",
+        "Minnesota": "MN",
+        "Mississippi": "MS",
+        "Missouri": "MO",
+        "Montana": "MT",
+        "Nebraska": "NE",
+        "Nevada": "NV",
+        "New Hampshire": "NH",
+        "New Jersey": "NJ",
+        "New Mexico": "NM",
+        "New York": "NY",
+        "North Carolina": "NC",
+        "North Dakota": "ND",
+        "Ohio": "OH",
+        "Oklahoma": "OK",
+        "Oregon": "OR",
+        "Pennsylvania": "PA",
+        "Rhode Island": "RI",
+        "South Carolina": "SC",
+        "South Dakota": "SD",
+        "Tennessee": "TN",
+        "Texas": "TX",
+        "Utah": "UT",
+        "Vermont": "VT",
+        "Virginia": "VA",
+        "Washington": "WA",
+        "West Virginia": "WV",
+        "Wisconsin": "WI",
+        "Wyoming": "WY"
+    }
 
     figure8_data = census_data[
         ["state_name", "pct_lives_alone"]
     ].dropna().copy()
 
-    fig8 = px.box(
-        figure8_data,
-        x="pct_lives_alone",
-        points="all",
-        hover_name="state_name",
-        color_discrete_sequence=["#5F9988"],
-        labels={
-            "pct_lives_alone": "Young adults living alone (%)"
-        }
+    figure8_data["State code"] = (
+        figure8_data["state_name"].map(state_abbreviations)
     )
 
-    fig8.update_traces(
-        jitter=0.35,
-        pointpos=0,
-        marker=dict(
-            color="#2F7668",
-            size=8,
-            opacity=0.72,
-            line=dict(color="white", width=1)
-        ),
-        line=dict(color="#2F7668")
+    figure8_data = figure8_data.dropna(subset=["State code"])
+
+    fig8 = px.choropleth(
+        figure8_data,
+        locations="State code",
+        locationmode="USA-states",
+        color="pct_lives_alone",
+        scope="usa",
+        hover_name="state_name",
+        hover_data={
+            "State code": False,
+            "pct_lives_alone": ":.1f"
+        },
+        labels={
+            "pct_lives_alone": "Living alone (%)"
+        },
+        color_continuous_scale=[
+            [0.00, "#DDECE4"],
+            [0.35, "#A8CCB9"],
+            [0.70, "#5F9988"],
+            [1.00, "#245F55"]
+        ]
     )
 
     fig8.update_layout(
         template="plotly_white",
-        height=380,
-        yaxis_visible=False,
-        showlegend=False,
-        margin=dict(l=25, r=35, t=20, b=55)
+        height=560,
+        margin=dict(l=0, r=0, t=10, b=0),
+        coloraxis_colorbar=dict(
+            title="Living<br>alone (%)",
+            thickness=18,
+            len=0.70
+        )
+    )
+
+    fig8.update_geos(
+        bgcolor="rgba(0,0,0,0)",
+        lakecolor="#E8F2EC",
+        showlakes=True
     )
 
     st.plotly_chart(fig8, use_container_width=True)
 
     st.markdown("""
-    Each point represents one state or the District of Columbia, while the box
-    summarizes the central half of the distribution. Most states form a compact
-    group, but the higher values reveal locations where living alone is
-    considerably more common.
+    Darker states have a higher percentage of young adults ages 18–34 living
+    alone, while lighter states have a lower percentage. The geographic pattern
+    demonstrates that living arrangements differ across the country and may be
+    influenced by housing costs, employment opportunities, migration, and
+    regional norms.
     """)
 
     # ---------------------------------------------------------
