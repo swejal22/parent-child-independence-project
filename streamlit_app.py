@@ -15,31 +15,35 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Top navigation bar */
-    [data-testid="stTopNav"] {
-        background-color: #D6E7DC;
-        border-bottom: 3px solid #5E907E;
-        padding: 0.35rem 0.75rem;
-    }
-
-    [data-testid="stTopNav"] a {
-        border-radius: 10px;
-        padding: 0.45rem 0.8rem;
-        transition: all 0.2s ease;
-    }
-
-    [data-testid="stTopNav"] a:hover {
-        background-color: #B8D3C2;
-    }
-
-    [data-testid="stTopNav"] a[aria-current="page"] {
+    /* Entire upper navigation toolbar */
+    header[data-testid="stHeader"] {
         background-color: #2F7668 !important;
-        box-shadow: 0 2px 8px rgba(47, 118, 104, 0.25);
+        border-bottom: 4px solid #1F5147 !important;
     }
 
-    [data-testid="stTopNav"] a[aria-current="page"] p {
+    /* Navigation labels and toolbar icons */
+    header[data-testid="stHeader"] p,
+    header[data-testid="stHeader"] span,
+    header[data-testid="stHeader"] svg {
         color: white !important;
+        fill: white !important;
+    }
+
+    /* Selected page */
+    header[data-testid="stHeader"] a[aria-current="page"] {
+        background-color: #D9EADF !important;
+        border-radius: 9px !important;
+    }
+
+    header[data-testid="stHeader"] a[aria-current="page"] p {
+        color: #18352F !important;
         font-weight: 700 !important;
+    }
+
+    /* Navigation hover */
+    header[data-testid="stHeader"] a:hover {
+        background-color: #4E8978 !important;
+        border-radius: 9px !important;
     }
     </style>
     """,
