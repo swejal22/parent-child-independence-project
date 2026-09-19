@@ -1,7 +1,26 @@
 [theme]
 base = "light"
-primaryColor = "#2A9D8F"
-backgroundColor = "#FFFDF7"
-secondaryBackgroundColor = "#E7F3F0"
-textColor = "#1F2937"
+primaryColor = "#2F7668"
+backgroundColor = "#E8F2EC"
+secondaryBackgroundColor = "#CFE2D7"
+textColor = "#18352F"
 font = "sans serif"
+
+chartCategoricalColors = [
+    "#2F7668",
+    "#4F8F7A",
+    "#70A991",
+    "#8FBFA5",
+    "#ADCFB8",
+    "#3F6F62"
+]
+
+chartSequentialColors = [
+    "#E1EFE5",
+    "#C5DFCD",
+    "#9FC8AD",
+    "#72AA8C",
+    "#4B8B72",
+    "#2F6F60",
+    "#184C42"
+]
