@@ -50,20 +50,77 @@ def load_data():
 
 def introduction():
     st.title("Parent–Child Bonds and Independence")
-    st.markdown(
-        """
-        <p class="project-subtitle">
-        Exploring communication, emotional support, living arrangements,
-        and financial independence among young adults in the United States.
-        </p>
-        """,
-        unsafe_allow_html=True
+    st.subheader(
+        "Communication, emotional support, living arrangements, "
+        "and financial independence among young adults in the United States"
     )
 
-    st.info(
-        "The complete introduction, topic image, and ten research "
-        "questions will be added in Module 1."
+    st.markdown("""
+    The transition from adolescence to adulthood involves major changes in housing,
+    education, employment, finances, and family relationships. For many young adults,
+    becoming independent is a gradual process rather than a single event. Some leave
+    the parental home for college or employment, while others remain at home or return
+    after living elsewhere. According to the
+    [U.S. Census Bureau](https://www.census.gov/library/stories/2024/05/living-arrangements.html),
+    living with parents was the most common arrangement among Americans ages 18 to 24
+    in 2022. The Census Bureau also reported that 57 percent of young men and 55 percent
+    of young women in this age group lived in a parental home. Housing costs, educational
+    expenses, employment opportunities, and cultural expectations can all shape these
+    arrangements. Living with parents does not necessarily mean that a young adult lacks
+    maturity or responsibility. It may provide stability while a person completes school,
+    begins a career, saves money, or manages an unexpected difficulty. Understanding
+    independence therefore requires attention to both material circumstances and the
+    relationships connecting young adults with their parents.
+    """)
+
+    st.image(
+        "https://www.census.gov/content/dam/Census/library/stories/2024/05/"
+        "living-arrangements/living-arrangements.jpg",
+        caption=(
+            "Living arrangements differ across stages of young adulthood. "
+            "Source: U.S. Census Bureau."
+        ),
+        use_container_width=True
     )
+
+    st.markdown("""
+    Parent–child relationships also continue to change after children reach adulthood.
+    Parents may provide advice, emotional reassurance, housing, transportation, or
+    financial assistance while young adults develop greater responsibility for their
+    own decisions. Young adults may value that support while also wanting privacy,
+    autonomy, and recognition as adults. Differences in expectations about money,
+    communication, household responsibilities, careers, and romantic relationships can
+    create tension. The
+    [American Psychological Association](https://www.apa.org/news/podcasts/speaking-of-psychology/parent-adult-children-relationships)
+    notes that later transitions into marriage, independent households, and financial
+    self-sufficiency have influenced relationships between parents and their adult
+    children. Frequent communication may strengthen some relationships, although its
+    meaning can depend on the quality and purpose of the interaction. Emotional support
+    can encourage confidence, while unwanted advice or excessive involvement may feel
+    restrictive. Experiences can also differ according to age, gender, education,
+    income, cultural background, and living arrangement. Examining these differences
+    helps clarify how families balance connection with autonomy. A broader understanding
+    of these relationships may help families, educators, counselors, and communities
+    support healthier transitions into adulthood.
+    """)
+
+    st.header("Questions Guiding the Study")
+
+    questions = [
+        "How is communication frequency related to young adults’ ratings of their relationships with their parents?",
+        "Do young adults who receive greater emotional support feel more prepared for independence?",
+        "How do relationship ratings differ between young adults who live with parents and those who do not?",
+        "How is financial independence associated with current living arrangements?",
+        "Do patterns of parental communication differ between adults ages 18–29 and adults ages 30–34?",
+        "How do experiences of parental support vary across gender groups?",
+        "Does education level relate to financial independence or living arrangements?",
+        "How do relationship quality and the ability to be one’s true self with a parent relate?",
+        "How do living arrangements for young adults vary across U.S. states and regions?",
+        "Which combination of communication, emotional support, financial circumstances, and demographics is most strongly associated with independence?"
+    ]
+
+    for number, question in enumerate(questions, start=1):
+        st.markdown(f"{number}. {question}")
 
 
 def data_prep_eda():
