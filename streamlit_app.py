@@ -232,6 +232,18 @@ def data_prep_eda():
     status, validated, cleaned, and saved as CSV files. The API key was entered
     securely during execution and was not stored in the notebook or repository.
     """)
+        st.subheader("Code and Reproducibility")
+
+    st.markdown(
+        """
+        The complete Python code used to collect, clean, validate, and prepare
+        both datasets is available in the
+        [GitHub data-preparation notebook](https://github.com/swejal22/parent-child-independence-project/blob/main/01_Load_and_Filter_Pew_Data.ipynb).
+
+        The work was completed in Python using pandas, NumPy, requests, and
+        Plotly.
+        """
+    )
 
     st.header("Data Cleaning and Preparation")
 
