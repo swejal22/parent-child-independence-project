@@ -309,139 +309,194 @@ def data_prep_eda():
 
     st.header("Exploratory Visualizations")
 
-    def show_count_chart(number, column, title, color, explanation):
-        counts = (
-            pew_eda[column]
-            .astype(str)
-            .value_counts()
-            .rename_axis("Category")
-            .reset_index(name="Respondents")
-        )
-
-        fig = px.bar(
-            counts,
-            x="Respondents",
-            y="Category",
-            orientation="h",
-            title=f"Figure {number}. {title}",
-            color_discrete_sequence=[color],
-            text="Respondents"
-        )
-
-        fig.update_traces(textposition="outside")
-        fig.update_layout(
-            template="plotly_white",
-            yaxis={"categoryorder": "total ascending"},
-            height=430,
-            margin=dict(l=20, r=40, t=70, b=40),
-            showlegend=False
-        )
-
-        st.plotly_chart(fig, use_container_width=True)
-        st.markdown(explanation)
-
-    show_count_chart(
-        1,
-        "relationship_rating",
-        "Young Adults' Ratings of Their Relationships with Parents",
-        "#2A9D8F",
-        """
-        Most respondents describe their parental relationship positively, although
-        the ratings are not identical across the sample. The smaller negative
-        categories remain important because they identify young adults whose family
-        experiences differ from the dominant pattern.
-        """
+        # ---------------------------------------------------------
+    # Figure 1: Horizontal bar chart
+    # ---------------------------------------------------------
+    relationship_counts = (
+        pew_eda["relationship_rating"]
+        .astype(str)
+        .value_counts()
+        .rename_axis("Relationship rating")
+        .reset_index(name="Respondents")
+        .sort_values("Respondents")
     )
 
-    show_count_chart(
-        2,
-        "text_frequency",
-        "Frequency of Text Communication with Parents",
-        "#457B9D",
-        """
-        Text communication is frequent for many young adults who do not live with
-        their parents. The not-applicable group largely reflects survey routing for
-        respondents living with parents rather than an ordinary unanswered value.
-        """
+    fig1 = px.bar(
+        relationship_counts,
+        x="Respondents",
+        y="Relationship rating",
+        orientation="h",
+        title="Figure 1. Young Adults' Ratings of Their Relationships with Parents",
+        color_discrete_sequence=["#2A9D8F"],
+        text="Respondents"
     )
 
-    show_count_chart(
-        3,
-        "financial_independence",
-        "Level of Financial Independence",
-        "#E76F51",
-        """
-        Financial independence exists on a continuum rather than as a simple
-        independent-or-dependent division. The distribution allows later analyses
-        to examine whether financial circumstances are related to relationship
-        quality and living arrangements.
-        """
+    fig1.update_traces(textposition="outside")
+    fig1.update_layout(
+        template="plotly_white",
+        height=450,
+        showlegend=False
     )
 
-    show_count_chart(
-        4,
-        "lives_with_parents",
-        "Current Living Arrangement with Parents",
-        "#F4A261",
-        """
-        The survey includes both young adults who live with parents and those who
-        maintain a separate household. This distinction provides an important basis
-        for comparing communication, support, and independence.
-        """
+    st.plotly_chart(fig1, use_container_width=True)
+
+    st.markdown("""
+    Most respondents describe their parental relationships positively, although
+    the ratings are not identical across the sample. The smaller negative
+    categories identify young adults whose family experiences differ from the
+    dominant pattern.
+    """)
+
+    # ---------------------------------------------------------
+    # Figure 2: Vertical bar chart
+    # ---------------------------------------------------------
+    text_counts = (
+        pew_eda["text_frequency"]
+        .astype(str)
+        .value_counts()
+        .rename_axis("Text frequency")
+        .reset_index(name="Respondents")
     )
 
-    show_count_chart(
-        5,
-        "prepared_for_independence",
-        "Perceived Preparation for Independence",
-        "#6A4C93",
-        """
-        Respondents report different levels of preparation for becoming independent
-        adults. These differences may reflect family support, education, employment,
-        financial resources, and earlier opportunities to make decisions.
-        """
+    fig2 = px.bar(
+        text_counts,
+        x="Text frequency",
+        y="Respondents",
+        title="Figure 2. Frequency of Text Communication with Parents",
+        color="Respondents",
+        color_continuous_scale="GnBu",
+        text="Respondents"
     )
 
-    show_count_chart(
-        6,
-        "advice_finances",
-        "Frequency of Receiving Financial Advice from Parents",
-        "#3A86FF",
-        """
-        Parental financial advice remains common after children reach adulthood.
-        The chart also shows that the level of parental involvement varies
-        considerably across young adults.
-        """
+    fig2.update_traces(textposition="outside")
+    fig2.update_layout(
+        template="plotly_white",
+        height=470,
+        coloraxis_showscale=False,
+        xaxis_tickangle=-25
     )
 
-    show_count_chart(
-        7,
-        "true_self_with_parent",
-        "Ability to Be One's True Self with a Parent",
-        "#8338EC",
-        """
-        Many respondents report being able to act authentically around a parent,
-        although this experience is not universal. Comfort with self-expression may
-        be an important indicator of emotional closeness and relationship quality.
-        """
+    st.plotly_chart(fig2, use_container_width=True)
+
+    st.markdown("""
+    Text communication is frequent for many young adults who live separately
+    from their parents. The not-applicable category primarily reflects survey
+    routing for respondents who live with a parent.
+    """)
+
+    # ---------------------------------------------------------
+    # Figure 3: Vertical bar chart
+    # ---------------------------------------------------------
+    independence_counts = (
+        pew_eda["financial_independence"]
+        .astype(str)
+        .value_counts()
+        .rename_axis("Financial independence")
+        .reset_index(name="Respondents")
     )
 
-    show_count_chart(
-        8,
-        "employment_status",
-        "Employment Status of Young Adult Respondents",
-        "#00A896",
-        """
-        Full-time employment is the most common status in this sample, but
-        part-time work and nonemployment are also represented. Employment can affect
-        income, housing choices, and the timing of financial independence.
-        """
+    fig3 = px.bar(
+        independence_counts,
+        x="Financial independence",
+        y="Respondents",
+        title="Figure 3. Level of Financial Independence",
+        color_discrete_sequence=["#E76F51"],
+        text="Respondents"
     )
 
-    st.subheader(
-        "Figure 9. Relationship Ratings by Whether Young Adults Live with Parents"
+    fig3.update_traces(textposition="outside")
+    fig3.update_layout(
+        template="plotly_white",
+        height=470,
+        showlegend=False,
+        xaxis_tickangle=-20
     )
 
+    st.plotly_chart(fig3, use_container_width=True)
+
+    st.markdown("""
+    Financial independence exists on a continuum rather than as a simple
+    independent-or-dependent division. This variation can support later
+    investigation of relationships among finances, housing, and family support.
+    """)
+
+    # ---------------------------------------------------------
+    # Figure 4: Donut chart
+    # ---------------------------------------------------------
+    living_counts = (
+        pew_eda["lives_with_parents"]
+        .astype(str)
+        .value_counts()
+        .rename_axis("Living arrangement")
+        .reset_index(name="Respondents")
+    )
+
+    fig4 = px.pie(
+        living_counts,
+        names="Living arrangement",
+        values="Respondents",
+        hole=0.48,
+        title="Figure 4. Current Living Arrangement with Parents",
+        color_discrete_sequence=["#2F7668", "#A8CCB9", "#E9C46A"]
+    )
+
+    fig4.update_traces(
+        textposition="inside",
+        textinfo="percent+label"
+    )
+
+    fig4.update_layout(
+        template="plotly_white",
+        height=500,
+        legend_title="Living arrangement"
+    )
+
+    st.plotly_chart(fig4, use_container_width=True)
+
+    st.markdown("""
+    The survey includes young adults who live with their parents as well as
+    those who maintain separate households. This distinction provides a basis
+    for comparing communication, support, and independence.
+    """)
+
+    # ---------------------------------------------------------
+    # Figure 5: Heatmap
+    # ---------------------------------------------------------
+    fig5 = px.density_heatmap(
+        pew_eda,
+        x="prepared_for_independence",
+        y="relationship_rating",
+        histfunc="count",
+        text_auto=True,
+        title=(
+            "Figure 5. Relationship Rating and Perceived Preparation "
+            "for Independence"
+        ),
+        labels={
+            "prepared_for_independence": "Preparation for independence",
+            "relationship_rating": "Relationship rating"
+        },
+        color_continuous_scale="GnBu"
+    )
+
+    fig5.update_layout(
+        template="plotly_white",
+        height=520,
+        xaxis_tickangle=-25,
+        coloraxis_colorbar_title="Respondents"
+    )
+
+    st.plotly_chart(fig5, use_container_width=True)
+
+    st.markdown("""
+    This heatmap compares relationship ratings with respondents' perceptions
+    of how well their parents prepared them for independence. Darker cells
+    identify combinations that occur more frequently within the survey sample.
+    """)
+
+    # ---------------------------------------------------------
+    # Figure 6: One-hundred-percent stacked bar chart
+    # ---------------------------------------------------------
     relationship_living = pd.crosstab(
         pew_eda["lives_with_parents"].astype(str),
         pew_eda["relationship_rating"].astype(str),
@@ -454,37 +509,157 @@ def data_prep_eda():
         value_name="Percent"
     )
 
-    fig9 = px.bar(
+    fig6 = px.bar(
         relationship_living,
         x="lives_with_parents",
         y="Percent",
         color="Relationship rating",
         barmode="stack",
-        labels={"lives_with_parents": "Living arrangement"},
+        title=(
+            "Figure 6. Relationship Ratings by Whether Young Adults "
+            "Live with Parents"
+        ),
+        labels={
+            "lives_with_parents": "Living arrangement",
+            "Percent": "Percent of respondents"
+        },
         color_discrete_sequence=px.colors.qualitative.Set2
+    )
+
+    fig6.update_layout(
+        template="plotly_white",
+        height=500,
+        legend_title="Relationship rating"
+    )
+
+    st.plotly_chart(fig6, use_container_width=True)
+
+    st.markdown("""
+    The percentages compare relationship ratings without allowing the larger
+    living-arrangement group to dominate the figure. Differences between the
+    bars show whether relationship evaluations vary with living arrangements.
+    """)
+
+    # ---------------------------------------------------------
+    # Figure 7: Treemap
+    # ---------------------------------------------------------
+    employment_counts = (
+        pew_eda["employment_status"]
+        .astype(str)
+        .value_counts()
+        .rename_axis("Employment status")
+        .reset_index(name="Respondents")
+    )
+
+    fig7 = px.treemap(
+        employment_counts,
+        path=["Employment status"],
+        values="Respondents",
+        color="Respondents",
+        title="Figure 7. Employment Status of Young Adult Respondents",
+        color_continuous_scale="GnBu"
+    )
+
+    fig7.update_traces(
+        texttemplate="<b>%{label}</b><br>%{value} respondents"
+    )
+
+    fig7.update_layout(
+        template="plotly_white",
+        height=500,
+        coloraxis_showscale=False
+    )
+
+    st.plotly_chart(fig7, use_container_width=True)
+
+    st.markdown("""
+    Full-time employment occupies the largest area because it is the most
+    common employment status in the sample. Part-time employment and
+    nonemployment remain important because work status can influence housing
+    and financial independence.
+    """)
+
+    # ---------------------------------------------------------
+    # Figure 8: True histogram using continuous Census data
+    # ---------------------------------------------------------
+    fig8 = px.histogram(
+        census_data,
+        x="pct_lives_alone",
+        nbins=10,
+        title=(
+            "Figure 8. Distribution of State Percentages of "
+            "Young Adults Living Alone"
+        ),
+        labels={
+            "pct_lives_alone": "Young adults living alone (%)",
+            "count": "Number of states"
+        },
+        color_discrete_sequence=["#5E907E"]
+    )
+
+    fig8.update_layout(
+        template="plotly_white",
+        height=480,
+        bargap=0.08,
+        showlegend=False,
+        yaxis_title="Number of states"
+    )
+
+    st.plotly_chart(fig8, use_container_width=True)
+
+    st.markdown("""
+    This histogram shows how state percentages of young adults living alone
+    are distributed across the United States. Most states fall within the
+    central range, while a smaller number appear near the higher and lower ends.
+    """)
+
+    # ---------------------------------------------------------
+    # Figure 9: Scatterplot
+    # ---------------------------------------------------------
+    fig9 = px.scatter(
+        census_data,
+        x="pct_lives_alone",
+        y="pct_child_of_householder",
+        hover_name="state_name",
+        title=(
+            "Figure 9. Living Alone Compared with Living as "
+            "a Child of the Householder"
+        ),
+        labels={
+            "pct_lives_alone": "Young adults living alone (%)",
+            "pct_child_of_householder":
+                "Young adults recorded as child of householder (%)"
+        },
+        color="pct_lives_with_spouse",
+        size="pct_lives_with_unmarried_partner",
+        color_continuous_scale="Teal"
+    )
+
+    fig9.update_traces(
+        marker=dict(
+            line=dict(width=1, color="#FFFFFF"),
+            opacity=0.85
+        )
     )
 
     fig9.update_layout(
         template="plotly_white",
-        height=500,
-        yaxis_title="Percent of respondents",
-        xaxis_title="Living arrangement",
-        legend_title="Relationship rating"
+        height=520,
+        coloraxis_colorbar_title="Living with<br>spouse (%)"
     )
 
     st.plotly_chart(fig9, use_container_width=True)
 
     st.markdown("""
-    The stacked percentages compare relationship ratings without allowing the
-    larger living-arrangement group to dominate the result. Differences between
-    the bars indicate whether living with parents is associated with a different
-    pattern of relationship evaluations.
+    Each point represents one state and compares two different young-adult
+    living arrangements. The figure helps reveal whether states with higher
+    rates of living alone tend to have lower rates of young adults living in
+    a parent's household.
     """)
 
-    st.subheader(
-        "Figure 10. States with the Highest Percentage of Young Adults Living Alone"
-    )
-
+    # ---------------------------------------------------------
+    # Figure 10: Ranked horizontal bar chart
+    # ---------------------------------------------------------
     top_states = (
         census_data.nlargest(10, "pct_lives_alone")
         .sort_values("pct_lives_alone")
@@ -495,27 +670,37 @@ def data_prep_eda():
         x="pct_lives_alone",
         y="state_name",
         orientation="h",
+        title=(
+            "Figure 10. States with the Highest Percentage of "
+            "Young Adults Living Alone"
+        ),
         labels={
             "pct_lives_alone": "Young adults living alone (%)",
             "state_name": "State"
         },
         color="pct_lives_alone",
-        color_continuous_scale="Teal"
+        color_continuous_scale="Teal",
+        text="pct_lives_alone"
+    )
+
+    fig10.update_traces(
+        texttemplate="%{text:.1f}%",
+        textposition="outside"
     )
 
     fig10.update_layout(
         template="plotly_white",
-        height=500,
+        height=520,
         coloraxis_showscale=False
     )
 
     st.plotly_chart(fig10, use_container_width=True)
 
     st.markdown("""
-    The percentage of adults ages 18–34 living alone varies noticeably across
-    states, showing that independence is also shaped by geographic conditions.
-    Differences may reflect housing costs, employment opportunities, migration,
-    population composition, and regional norms.
+    The percentage of young adults living alone varies noticeably across
+    states, demonstrating that independence also has a geographic dimension.
+    Housing costs, employment opportunities, migration, and regional norms may
+    contribute to these differences.
     """)
 
     st.header("EDA Summary")
