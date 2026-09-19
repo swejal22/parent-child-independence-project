@@ -75,14 +75,13 @@ def introduction():
     """)
 
     st.image(
-        "https://www.census.gov/content/dam/Census/library/stories/2024/05/"
-        "living-arrangements/living-arrangements.jpg",
-        caption=(
-            "Living arrangements differ across stages of young adulthood. "
-            "Source: U.S. Census Bureau."
-        ),
-        use_container_width=True
-    )
+    "parent-young-adult-illustration.png",
+    caption=(
+        "Family support and connection can remain important "
+        "as young adults develop greater independence."
+    ),
+    use_container_width=True
+)
 
     st.markdown("""
     Parent–child relationships also continue to change after children reach adulthood.
