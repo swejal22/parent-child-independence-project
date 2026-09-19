@@ -348,269 +348,554 @@ def data_prep_eda():
     """)
 
     # ---------------------------------------------------------
-    # Figure 2: Vertical bar chart
+        # ---------------------------------------------------------
+    # Shared colors and helper
     # ---------------------------------------------------------
-    text_counts = (
-        pew_eda["text_frequency"]
-        .astype(str)
-        .value_counts()
-        .rename_axis("Text frequency")
-        .reset_index(name="Respondents")
+
+    sage_palette = [
+        "#2F7668",
+        "#5F9988",
+        "#86B5A3",
+        "#A8CCB9",
+        "#D3E5DA",
+        "#E9A178"
+    ]
+
+    def applicable_counts(column, label_map=None, order=None):
+        values = pew_eda[column].astype(str).str.strip()
+
+        values = values[
+            ~values.str.lower().isin([
+                "not applicable / no response",
+                "not applicable/no response",
+                "nan",
+                "none"
+            ])
+        ]
+
+        if label_map:
+            values = values.replace(label_map)
+
+        counts = (
+            values.value_counts()
+            .rename_axis("Category")
+            .reset_index(name="Respondents")
+        )
+
+        counts["Percent"] = (
+            counts["Respondents"] / counts["Respondents"].sum() * 100
+        )
+
+        if order:
+            counts["Category"] = pd.Categorical(
+                counts["Category"],
+                categories=order,
+                ordered=True
+            )
+            counts = counts.sort_values("Category")
+
+        return counts
+
+
+    # ---------------------------------------------------------
+    # FIGURE 2 — Horizontal bars with shortened labels
+    # ---------------------------------------------------------
+
+    st.subheader("Figure 2. Frequency of Text Communication with Parents")
+
+    text_labels = {
+        "At least once a day": "Daily",
+        "A few times a week": "A few times weekly",
+        "A few times a month": "A few times monthly",
+        "Once a month": "Once monthly",
+        "Less than once a month": "Less than monthly"
+    }
+
+    text_order = [
+        "Daily",
+        "A few times weekly",
+        "A few times monthly",
+        "Once monthly",
+        "Less than monthly",
+        "Never"
+    ]
+
+    text_counts = applicable_counts(
+        "text_frequency",
+        label_map=text_labels,
+        order=text_order
     )
 
     fig2 = px.bar(
         text_counts,
-        x="Text frequency",
-        y="Respondents",
-        title="Figure 2. Frequency of Text Communication with Parents",
-        color="Respondents",
-        color_continuous_scale="GnBu",
-        text="Respondents"
+        x="Percent",
+        y="Category",
+        orientation="h",
+        text="Percent",
+        color="Percent",
+        color_continuous_scale=[
+            [0, "#CFE2D7"],
+            [1, "#2F7668"]
+        ],
+        labels={
+            "Percent": "Applicable respondents (%)",
+            "Category": ""
+        }
     )
 
-    fig2.update_traces(textposition="outside")
+    fig2.update_traces(
+        texttemplate="%{text:.1f}%",
+        textposition="outside",
+        cliponaxis=False
+    )
+
     fig2.update_layout(
         template="plotly_white",
-        height=470,
+        height=440,
         coloraxis_showscale=False,
-        xaxis_tickangle=-25
+        yaxis={"categoryorder": "array", "categoryarray": text_order[::-1]},
+        margin=dict(l=25, r=70, t=20, b=50),
+        xaxis_range=[0, text_counts["Percent"].max() * 1.18]
     )
 
     st.plotly_chart(fig2, use_container_width=True)
 
     st.markdown("""
-    Text communication is frequent for many young adults who live separately
-    from their parents. The not-applicable category primarily reflects survey
-    routing for respondents who live with a parent.
+    Daily and weekly texting account for a substantial share of communication
+    among respondents who live separately from their parents. Survey-routing
+    responses were excluded so that the chart describes actual communication
+    frequency rather than living-arrangement eligibility.
     """)
 
+
     # ---------------------------------------------------------
-    # Figure 3: Vertical bar chart
+    # FIGURE 3 — Ordered horizontal financial-independence scale
     # ---------------------------------------------------------
-    independence_counts = (
-        pew_eda["financial_independence"]
-        .astype(str)
-        .value_counts()
-        .rename_axis("Financial independence")
-        .reset_index(name="Respondents")
+
+    st.subheader("Figure 3. Level of Financial Independence")
+
+    financial_order = [
+        "Completely",
+        "Mostly",
+        "Somewhat",
+        "A little",
+        "Not at all"
+    ]
+
+    financial_counts = applicable_counts(
+        "financial_independence",
+        order=financial_order
     )
 
     fig3 = px.bar(
-        independence_counts,
-        x="Financial independence",
-        y="Respondents",
-        title="Figure 3. Level of Financial Independence",
-        color_discrete_sequence=["#E76F51"],
-        text="Respondents"
+        financial_counts,
+        x="Percent",
+        y="Category",
+        orientation="h",
+        text="Percent",
+        color="Category",
+        color_discrete_sequence=[
+            "#2F7668",
+            "#5F9988",
+            "#86B5A3",
+            "#D8B46A",
+            "#E58B73"
+        ],
+        labels={
+            "Percent": "Respondents (%)",
+            "Category": ""
+        }
     )
 
-    fig3.update_traces(textposition="outside")
+    fig3.update_traces(
+        texttemplate="%{text:.1f}%",
+        textposition="outside",
+        cliponaxis=False
+    )
+
     fig3.update_layout(
         template="plotly_white",
-        height=470,
+        height=410,
         showlegend=False,
-        xaxis_tickangle=-20
+        yaxis={
+            "categoryorder": "array",
+            "categoryarray": financial_order[::-1]
+        },
+        margin=dict(l=25, r=70, t=20, b=50),
+        xaxis_range=[0, financial_counts["Percent"].max() * 1.18]
     )
 
     st.plotly_chart(fig3, use_container_width=True)
 
     st.markdown("""
-    Financial independence exists on a continuum rather than as a simple
-    independent-or-dependent division. This variation can support later
-    investigation of relationships among finances, housing, and family support.
+    Financial independence forms a gradual scale instead of a simple division
+    between dependence and independence. The distribution provides a basis for
+    examining how financial circumstances correspond with housing and parental
+    support.
     """)
 
+
     # ---------------------------------------------------------
-    # Figure 4: Donut chart
+    # FIGURE 4 — Living arrangements as percentages
     # ---------------------------------------------------------
-    living_counts = (
-        pew_eda["lives_with_parents"]
-        .astype(str)
-        .value_counts()
-        .rename_axis("Living arrangement")
-        .reset_index(name="Respondents")
+
+    st.subheader("Figure 4. Current Living Arrangement with Parents")
+
+    living_labels = {
+        "Does not live with a parent": "Lives separately",
+        "Lives with all parents": "Lives with all parents",
+        "Lives with at least one parent": "Lives with one parent"
+    }
+
+    living_order = [
+        "Lives separately",
+        "Lives with all parents",
+        "Lives with one parent"
+    ]
+
+    living_counts = applicable_counts(
+        "lives_with_parents",
+        label_map=living_labels,
+        order=living_order
     )
 
-    fig4 = px.pie(
+    fig4 = px.bar(
         living_counts,
-        names="Living arrangement",
-        values="Respondents",
-        hole=0.48,
-        title="Figure 4. Current Living Arrangement with Parents",
-        color_discrete_sequence=["#2F7668", "#A8CCB9", "#E9C46A"]
+        x="Category",
+        y="Percent",
+        text="Percent",
+        color="Category",
+        color_discrete_sequence=[
+            "#2F7668",
+            "#7EAD98",
+            "#E9A178"
+        ],
+        labels={
+            "Percent": "Respondents (%)",
+            "Category": "Living arrangement"
+        }
     )
 
     fig4.update_traces(
-        textposition="inside",
-        textinfo="percent+label"
+        texttemplate="%{text:.1f}%",
+        textposition="outside",
+        cliponaxis=False
     )
 
     fig4.update_layout(
         template="plotly_white",
-        height=500,
-        legend_title="Living arrangement"
+        height=440,
+        showlegend=False,
+        xaxis_tickangle=0,
+        margin=dict(l=25, r=35, t=20, b=60),
+        yaxis_range=[0, living_counts["Percent"].max() * 1.15]
     )
 
     st.plotly_chart(fig4, use_container_width=True)
 
     st.markdown("""
-    The survey includes young adults who live with their parents as well as
-    those who maintain separate households. This distinction provides a basis
-    for comparing communication, support, and independence.
+    Most respondents maintain a household separate from their parents, while a
+    meaningful minority live with one or both parents. These categories provide
+    a clearer basis for comparing communication, support, and relationship
+    experiences.
     """)
 
+
     # ---------------------------------------------------------
-    # Figure 5: Heatmap
+    # FIGURE 5 — 100% stacked relationship profile
     # ---------------------------------------------------------
-    fig5 = px.density_heatmap(
-        pew_eda,
-        x="prepared_for_independence",
-        y="relationship_rating",
-        histfunc="count",
-        text_auto=True,
-        title=(
-            "Figure 5. Relationship Rating and Perceived Preparation "
-            "for Independence"
-        ),
-        labels={
-            "prepared_for_independence": "Preparation for independence",
-            "relationship_rating": "Relationship rating"
+
+    st.subheader(
+        "Figure 5. Relationship Ratings Across Levels of Preparation "
+        "for Independence"
+    )
+
+    relationship_order = [
+        "Poor",
+        "Fair",
+        "Good",
+        "Very good",
+        "Excellent"
+    ]
+
+    preparation_order = [
+        "Not at all",
+        "Not much",
+        "Some",
+        "A fair amount",
+        "A great deal"
+    ]
+
+    figure5_data = pew_eda[
+        ["relationship_rating", "prepared_for_independence"]
+    ].astype(str)
+
+    figure5_data = figure5_data[
+        ~figure5_data["relationship_rating"].str.lower().isin(
+            ["not applicable / no response", "nan", "none"]
+        )
+        &
+        ~figure5_data["prepared_for_independence"].str.lower().isin(
+            ["not applicable / no response", "nan", "none"]
+        )
+    ]
+
+    figure5_table = pd.crosstab(
+        figure5_data["prepared_for_independence"],
+        figure5_data["relationship_rating"],
+        normalize="index"
+    ).mul(100)
+
+    figure5_table = figure5_table.reindex(
+        index=preparation_order,
+        columns=relationship_order,
+        fill_value=0
+    ).reset_index()
+
+    figure5_long = figure5_table.melt(
+        id_vars="prepared_for_independence",
+        var_name="Relationship rating",
+        value_name="Percent"
+    )
+
+    fig5 = px.bar(
+        figure5_long,
+        x="Percent",
+        y="prepared_for_independence",
+        color="Relationship rating",
+        orientation="h",
+        category_orders={
+            "prepared_for_independence": preparation_order,
+            "Relationship rating": relationship_order
         },
-        color_continuous_scale="GnBu"
+        color_discrete_map={
+            "Poor": "#D97967",
+            "Fair": "#E9A178",
+            "Good": "#A8CCB9",
+            "Very good": "#5F9988",
+            "Excellent": "#2F7668"
+        },
+        labels={
+            "Percent": "Relationship-rating composition (%)",
+            "prepared_for_independence": "Preparation for independence"
+        }
     )
 
     fig5.update_layout(
         template="plotly_white",
-        height=520,
-        xaxis_tickangle=-25,
-        coloraxis_colorbar_title="Respondents"
+        height=480,
+        barmode="stack",
+        legend_title="Relationship rating",
+        margin=dict(l=25, r=25, t=20, b=50)
     )
 
     st.plotly_chart(fig5, use_container_width=True)
 
     st.markdown("""
-    This heatmap compares relationship ratings with respondents' perceptions
-    of how well their parents prepared them for independence. Darker cells
-    identify combinations that occur more frequently within the survey sample.
+    Each bar shows the relationship-rating composition within one level of
+    preparation for independence. The growing share of positive ratings helps
+    illustrate whether stronger perceived preparation accompanies stronger
+    parent–child relationships.
     """)
 
-    # ---------------------------------------------------------
-    # Figure 6: One-hundred-percent stacked bar chart
-    # ---------------------------------------------------------
-    relationship_living = pd.crosstab(
-        pew_eda["lives_with_parents"].astype(str),
-        pew_eda["relationship_rating"].astype(str),
-        normalize="index"
-    ).mul(100).reset_index()
 
-    relationship_living = relationship_living.melt(
-        id_vars="lives_with_parents",
-        var_name="Relationship rating",
-        value_name="Percent"
+    # ---------------------------------------------------------
+    # FIGURE 6 — Positive relationship ratings by arrangement
+    # ---------------------------------------------------------
+
+    st.subheader(
+        "Figure 6. Positive Parent–Child Relationship Ratings "
+        "by Living Arrangement"
     )
 
+    figure6_data = pew_eda[
+        ["lives_with_parents", "relationship_rating"]
+    ].astype(str)
+
+    figure6_data = figure6_data[
+        ~figure6_data["lives_with_parents"].str.lower().isin(
+            ["not applicable / no response", "nan", "none"]
+        )
+        &
+        ~figure6_data["relationship_rating"].str.lower().isin(
+            ["not applicable / no response", "nan", "none"]
+        )
+    ]
+
+    figure6_data["Living arrangement"] = (
+        figure6_data["lives_with_parents"].replace(living_labels)
+    )
+
+    figure6_data["Positive relationship"] = (
+        figure6_data["relationship_rating"]
+        .isin(["Excellent", "Very good"])
+    )
+
+    figure6_summary = (
+        figure6_data
+        .groupby("Living arrangement")["Positive relationship"]
+        .mean()
+        .mul(100)
+        .reset_index(name="Positive ratings")
+    )
+
+    figure6_summary["Living arrangement"] = pd.Categorical(
+        figure6_summary["Living arrangement"],
+        categories=living_order,
+        ordered=True
+    )
+
+    figure6_summary = figure6_summary.sort_values("Living arrangement")
+
     fig6 = px.bar(
-        relationship_living,
-        x="lives_with_parents",
-        y="Percent",
-        color="Relationship rating",
-        barmode="stack",
-        title=(
-            "Figure 6. Relationship Ratings by Whether Young Adults "
-            "Live with Parents"
-        ),
+        figure6_summary,
+        x="Living arrangement",
+        y="Positive ratings",
+        text="Positive ratings",
+        color="Living arrangement",
+        color_discrete_sequence=[
+            "#2F7668",
+            "#7EAD98",
+            "#E9A178"
+        ],
         labels={
-            "lives_with_parents": "Living arrangement",
-            "Percent": "Percent of respondents"
-        },
-        color_discrete_sequence=px.colors.qualitative.Set2
+            "Positive ratings":
+                "Respondents rating relationship Excellent or Very good (%)",
+            "Living arrangement": ""
+        }
+    )
+
+    fig6.update_traces(
+        texttemplate="%{text:.1f}%",
+        textposition="outside",
+        cliponaxis=False
     )
 
     fig6.update_layout(
         template="plotly_white",
-        height=500,
-        legend_title="Relationship rating"
+        height=440,
+        showlegend=False,
+        yaxis_range=[0, 100],
+        margin=dict(l=25, r=30, t=20, b=60)
     )
 
     st.plotly_chart(fig6, use_container_width=True)
 
     st.markdown("""
-    The percentages compare relationship ratings without allowing the larger
-    living-arrangement group to dominate the figure. Differences between the
-    bars show whether relationship evaluations vary with living arrangements.
+    This comparison focuses on the percentage of respondents who describe their
+    parental relationship as either excellent or very good. Presenting one clear
+    measure makes differences among living arrangements easier to interpret than
+    the earlier multi-category stacked chart.
     """)
 
-    # ---------------------------------------------------------
-    # Figure 7: Treemap
-    # ---------------------------------------------------------
-    employment_counts = (
-        pew_eda["employment_status"]
-        .astype(str)
-        .value_counts()
-        .rename_axis("Employment status")
-        .reset_index(name="Respondents")
-    )
 
-    fig7 = px.treemap(
+    # ---------------------------------------------------------
+    # FIGURE 7 — Employment-status donut
+    # ---------------------------------------------------------
+
+    st.subheader("Figure 7. Employment Status of Young Adult Respondents")
+
+    employment_counts = applicable_counts("employment_status")
+
+    fig7 = px.pie(
         employment_counts,
-        path=["Employment status"],
+        names="Category",
         values="Respondents",
-        color="Respondents",
-        title="Figure 7. Employment Status of Young Adult Respondents",
-        color_continuous_scale="GnBu"
+        hole=0.50,
+        color="Category",
+        color_discrete_sequence=[
+            "#2F7668",
+            "#86B5A3",
+            "#E9A178"
+        ]
     )
 
     fig7.update_traces(
-        texttemplate="<b>%{label}</b><br>%{value} respondents"
+        textposition="inside",
+        textinfo="percent",
+        hovertemplate=(
+            "<b>%{label}</b><br>"
+            "Respondents: %{value}<br>"
+            "Share: %{percent}<extra></extra>"
+        )
     )
 
     fig7.update_layout(
         template="plotly_white",
-        height=500,
-        coloraxis_showscale=False
+        height=450,
+        legend_title="Employment status",
+        margin=dict(l=20, r=20, t=20, b=30),
+        annotations=[
+            dict(
+                text="Employment<br>status",
+                x=0.5,
+                y=0.5,
+                showarrow=False,
+                font=dict(size=16, color="#18352F")
+            )
+        ]
     )
 
     st.plotly_chart(fig7, use_container_width=True)
 
     st.markdown("""
-    Full-time employment occupies the largest area because it is the most
-    common employment status in the sample. Part-time employment and
-    nonemployment remain important because work status can influence housing
-    and financial independence.
+    Full-time employment is the most common status in the sample, while
+    part-time employment and nonemployment remain meaningfully represented.
+    Employment may influence income, housing options, and the timing of
+    financial independence.
     """)
 
+
     # ---------------------------------------------------------
-    # Figure 8: True histogram using continuous Census data
+    # FIGURE 8 — Box plot with individual state points
     # ---------------------------------------------------------
-    fig8 = px.histogram(
-        census_data,
+
+    st.subheader(
+        "Figure 8. State Variation in Young Adults Living Alone"
+    )
+
+    figure8_data = census_data[
+        ["state_name", "pct_lives_alone"]
+    ].dropna().copy()
+
+    fig8 = px.box(
+        figure8_data,
         x="pct_lives_alone",
-        nbins=10,
-        title=(
-            "Figure 8. Distribution of State Percentages of "
-            "Young Adults Living Alone"
-        ),
+        points="all",
+        hover_name="state_name",
+        color_discrete_sequence=["#5F9988"],
         labels={
-            "pct_lives_alone": "Young adults living alone (%)",
-            "count": "Number of states"
-        },
-        color_discrete_sequence=["#5E907E"]
+            "pct_lives_alone": "Young adults living alone (%)"
+        }
+    )
+
+    fig8.update_traces(
+        jitter=0.35,
+        pointpos=0,
+        marker=dict(
+            color="#2F7668",
+            size=8,
+            opacity=0.72,
+            line=dict(color="white", width=1)
+        ),
+        line=dict(color="#2F7668")
     )
 
     fig8.update_layout(
         template="plotly_white",
-        height=480,
-        bargap=0.08,
+        height=380,
+        yaxis_visible=False,
         showlegend=False,
-        yaxis_title="Number of states"
+        margin=dict(l=25, r=35, t=20, b=55)
     )
 
     st.plotly_chart(fig8, use_container_width=True)
 
     st.markdown("""
-    This histogram shows how state percentages of young adults living alone
-    are distributed across the United States. Most states fall within the
-    central range, while a smaller number appear near the higher and lower ends.
+    Each point represents one state or the District of Columbia, while the box
+    summarizes the central half of the distribution. Most states form a compact
+    group, but the higher values reveal locations where living alone is
+    considerably more common.
     """)
 
     # ---------------------------------------------------------
