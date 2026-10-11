@@ -1,0 +1,9 @@
+metric,value
+best_kmeans_k,2.0
+best_kmeans_silhouette,0.21987696766243106
+best_hierarchical_k,2.0
+best_hierarchical_cosine_silhouette,0.3290107833038374
+adjusted_rand_index,0.6322832314879421
+pc1_variance,0.42270009456559987
+pc2_variance,0.13286502964139155
+pc1_pc2_cumulative_variance,0.5555651242069914

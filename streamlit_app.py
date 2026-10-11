@@ -1,10 +1,7 @@
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-
-import streamlit as st
-import pandas as pd
-import plotly.express as px
+from module2_pages import render_clustering_page, render_pca_page
 
 st.set_page_config(
     page_title="Parent–Child Bonds and Independence",
@@ -146,6 +143,33 @@ def introduction():
     helps clarify how families balance connection with autonomy. A broader understanding
     of these relationships may help families, educators, counselors, and communities
     support healthier transitions into adulthood.
+    """)
+
+    st.image(
+        "assets/module2/independence_pathways.png",
+        caption=(
+            "Housing, education, employment, finances, emotional support, and family "
+            "connection all contribute to the transition toward independence."
+        ),
+        use_container_width=True,
+    )
+
+    st.markdown("""
+    Independence also carries different meanings for different families and communities.
+    Young adults are often expected to make their own decisions while still maintaining
+    relationships with the people who helped raise them. These expectations can become
+    difficult when economic reality does not match traditional ideas about the timing of
+    adulthood. Rising housing costs, educational debt, unstable employment, and health
+    challenges may delay moving out or becoming fully financially self-sufficient. Parents
+    often respond by extending practical and emotional support beyond the teenage years.
+    This support may give young adults room to develop confidence, complete an education,
+    or recover from a setback. At the same time, too much involvement can create conflict
+    when advice begins to feel like control. Healthy families therefore need ways to balance
+    connection with boundaries, support with responsibility, and guidance with respect for
+    adult choices. Communities, educators, and counselors can also help by recognizing that
+    there is no single correct path into adulthood. A clearer understanding of these varied
+    experiences can encourage more realistic and compassionate conversations about what
+    independence means in the United States today.
     """)
 
     st.header("Questions Guiding the Study")
@@ -1102,11 +1126,11 @@ def future_page(title, module):
 
 
 def clustering():
-    future_page("Clustering", "Module 2")
+    render_clustering_page()
 
 
 def pca():
-    future_page("PCA", "Module 2")
+    render_pca_page()
 
 
 def naive_bayes():
