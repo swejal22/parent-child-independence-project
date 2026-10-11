@@ -68,23 +68,22 @@ def render_clustering_page():
     st.header("Overview")
     st.markdown(
         """
-        Clustering is an **unsupervised-learning** method that searches for groups of
-        observations with similar feature patterns. It does not begin with known class
-        labels or a correct answer. Instead, the algorithm uses distances among young
-        adults' responses to discover structure. This project uses clustering to ask
-        whether combinations of parental advice, emotional connection, relationship
-        quality, preparation, authenticity, and financial independence form recurring
-        profiles within the Pew sample.
+        Clustering is an **unsupervised learning** approach that looks for clusters of
+        observations with similar feature combinations. Clustering does not start with
+        classes or answers. Rather, the technique calculates distances between respondents
+        of young adults. This research project applies clustering to determine whether 
+        combinations of parental advice, emotional bond,relationship quality, preparedness, 
+        authenticity, and financial independence recur in the Pew dataset.
 
-        **Partitional clustering** divides the data directly into a chosen number of
-        non-overlapping groups. K-Means is partitional: it repeatedly assigns each
-        observation to the nearest centroid and updates the centroids until the solution
-        stabilizes. K-Means uses **Euclidean distance** and therefore works best after
-        standardization. **Hierarchical clustering** begins with individual observations
-        and progressively merges the most similar groups. Its dendrogram preserves the
-        nested history of those merges. The hierarchical analysis below uses
-        **cosine distance**, as required, with average linkage. Cosine distance emphasizes
-        similarity in response patterns rather than only straight-line magnitude.
+        **Partitional clustering** directly splits the data into a desired number of clusters.
+        K-means falls under partitional clustering, which continually classifies the data
+        points into their closest centroid and then re-computes them until the process
+        converges. K-means utilizes **Euclidean distance** and, hence, is best applied
+        after standardization. **Hierarchical clustering** starts by treating every point
+        as an independent cluster and then merges the closest clusters step by step. This
+        method creates a dendrogram that captures the sequence of clusters being
+        merged. The following hierarchical clustering utilizes **cosine distance**, as
+        required, and average linkage.
         """
     )
 
@@ -105,15 +104,16 @@ def render_clustering_page():
     st.header("Data Prep")
     st.markdown(
         """
-        Clustering requires **unlabeled numeric data** because the goal is to discover
-        groups rather than predict a known outcome. Respondent IDs, survey weights, and
-        demographic category codes were excluded from the model input. Twelve 1–5
-        relationship measures were retained. The original Pew scale placed the strongest
-        response at 1, so the variables were reverse-coded: a larger value now consistently
-        means more preparation, advice, connection, relationship quality, authenticity, or
-        independence. The small number of unanswered items was median-imputed, and all
-        features were standardized before distance calculations so each measure contributed
-        on a comparable scale. No cluster labels appear in the input file.
+        Clustering needs **numeric data without labels** since the intention is to find
+        the hidden groups instead of predicting an outcome. Respondent IDs, survey
+        weights, and demographic categories were not used in the analysis. Twelve scales
+        measuring relationships in range of 1–5 were selected for clustering. In the
+        original Pew research scale 1 represented the strongest reaction, therefore,
+        the data was reverse-transformed: higher scores indicate more preparation,
+        advice, contact, relationship quality, authenticity, and independence. Missing
+        values on few questions were filled in with medians, and all the measures
+        were scaled to be compared equally during the distance calculation. There are
+        no labels for clusters in the input file.
         """
     )
     st.image(
@@ -131,10 +131,10 @@ def render_clustering_page():
     st.header("Code")
     st.markdown(
         f"""
-        The analysis was completed in Python using pandas, NumPy, scikit-learn,
-        SciPy, Matplotlib, and Seaborn. The notebook tests K-Means with
-        $k=2,3,4,5,6$, calculates silhouette scores, creates a PCA projection,
-        and performs average-linkage hierarchical clustering with cosine distance.
+        The analysis was done with Python programming language through pandas, NumPy, scikit-learn, 
+        SciPy, Matplotlib, and Seaborn packages. The notebook runs K-Means with k = 2,3,4,5,6, 
+        finds silhouette scores, does PCA projection, and hierarchical clustering with cosine 
+        distance by average linkage.
 
         - [Clustering analysis notebook]({GITHUB}/03_Clustering_Analysis.ipynb)
         - [Reproducible Module 2 analysis script]({GITHUB}/module2_analysis.py)
@@ -171,12 +171,12 @@ def render_clustering_page():
     st.plotly_chart(_chart_layout(fig, 460), use_container_width=True)
     st.markdown(
         f"""
-        Five values were compared: **k = 2, 3, 4, 5, and 6**. The largest average
-        silhouette score is **{summary['best_kmeans_silhouette']:.3f} at k = {best_k}**,
-        so the two-cluster solution provides the clearest separation among the tested
-        choices. The score is positive but moderate, meaning the groups capture a real
-        tendency while still overlapping. Young-adult family relationships should
-        therefore be interpreted as continua rather than rigid types.
+        The five values are **k = 2, 3, 4, 5, and 6**. The highest average 
+        silhouette score is **{summary['best_kmeans_silhouette']:.3f} for k = {best_k}**, 
+        meaning that the two cluster analysis shows the most distinct separation. 
+        The score is positive and moderate, indicating that the clusters describe an underlying 
+        trend but have some overlap. Thus, young-adult family relations should be considered 
+        continua and not rigid types.
         """
     )
 
@@ -201,10 +201,10 @@ def render_clustering_page():
     st.plotly_chart(_chart_layout(fig, 560), use_container_width=True)
     st.markdown(
         """
-        The two clusters separate mainly along the first principal component, which
-        summarizes overall family connection and support. The boundary is gradual rather
-        than perfectly sharp, consistent with the silhouette result. The visualization is
-        a two-dimensional projection of the full 12-feature analysis; K-Means itself was
+        These two groups are primarily separated on the basis of the first principal component, 
+        which is the indicator of the general family ties and connections. 
+        The division is not strictly set, but gradual, similarly to the silhouette score result. 
+        This graph is two-dimensional projection of the full 12 features analysis; K-means was 
         fitted using all standardized features.
         """
     )
@@ -229,13 +229,13 @@ def render_clustering_page():
     st.plotly_chart(_chart_layout(fig, 600), use_container_width=True)
     st.markdown(
         """
-        The higher-connection group reports more parental advice across every topic,
-        stronger emotional reliance, greater relationship quality, more authenticity,
-        better knowledge of the parent as a person, and greater preparation for adult
-        independence. The lower-connection group reports slightly greater financial
-        independence despite lower scores on most relationship measures. This suggests
-        that financial separation and emotional connection are related but distinct parts
-        of becoming independent.
+        The high connection group reports receiving more parental advice on all topics,
+        having greater emotional dependence, better relationship quality, more
+        authenticity, better understanding of the individuality of their parents, and more
+        readiness for adulthood. The low connection group has slightly higher levels of
+        financial independence while scoring lower on all relationship measures.
+        This indicates that there is a connection but also a difference between these two
+        processes of becoming independent.
         """
     )
 
@@ -258,28 +258,27 @@ def render_clustering_page():
     st.plotly_chart(_chart_layout(fig, 430), use_container_width=True)
     st.markdown(
         f"""
-        Cutting the cosine-distance hierarchy at **k = {best_h_k}** gives the highest
-        tested cosine silhouette score (**{summary['best_hierarchical_cosine_silhouette']:.3f}**).
-        Hierarchical clustering therefore supports the same broad two-group structure as
-        K-Means. The Adjusted Rand Index between the two assignments is
-        **{summary['adjusted_rand_index']:.3f}**, indicating substantial—not perfect—agreement.
-        The difference is expected because K-Means uses Euclidean distance to centroids,
-        while the hierarchy uses average linkage over cosine distances.
+        The point where the cosine-distance hierarchy is cut at **k = {best_h_k}** produces 
+        the maximum cosine silhouette score of **{summary['best_hierarchical_cosine_silhouette']:.3f}** 
+        out of all of those that were tested. Therefore, hierarchical clustering also confirms the 
+        same general two-cluster structure that was found using K-Means. The Adjusted Rand Index 
+        between the two clusterings is **{summary['adjusted_rand_index']:.3f}**. 
+        The discrepancy results from the fact that K-Means relies on Euclidean distance from centroids.
         """
     )
 
     st.header("Conclusions")
     st.markdown(
         """
-        Both methods identify a broad contrast between young adults reporting stronger
-        family advice and emotional connection and those reporting less of these forms of
-        involvement. At the same time, the moderate separation and visible overlap show
-        that independence cannot be reduced to two fixed family types. Financial autonomy
-        can coexist with either close or limited parental connection, and high parental
-        support does not automatically imply low preparation for adulthood. The most useful
-        discovery is therefore a relationship pattern—not a judgment: emotional support,
-        advice, authenticity, and financial independence represent connected but different
-        dimensions of the transition to adulthood.
+        Both approaches point out a clear difference between young adults who perceive more
+        parental involvement, such as more family support and communication, and those who
+        perceive less of it. Still, a middle distance and an overlap indicate that
+        independence cannot be limited to two types of families only. There could be a
+        balance of financial independence and closer or distant parent-child relations.
+        Moreover, parental support cannot be considered as a reason for poor preparation
+        for adult life. The most valuable finding here is a pattern, not a dichotomy –
+        emotional support, advice, authenticity and financial independence are different but
+        connected aspects of growing up.
         """
     )
 
@@ -295,24 +294,23 @@ def render_pca_page():
     st.header("Overview")
     st.markdown(
         """
-        Principal Component Analysis (PCA) is an unsupervised dimensionality-reduction
-        method. A dataset with many related variables can be difficult to visualize,
-        summarize, and model because people cannot directly inspect a 12-dimensional
-        space. Correlated variables can also repeat similar information. PCA replaces the
-        original variables with new, uncorrelated axes called **principal components**.
-        The first component captures the greatest possible variance; each later component
-        captures the greatest remaining variance while staying perpendicular to the
-        earlier components.
+        Principal Component Analysis (PCA) is a dimension reduction technique that is
+        unsupervised in nature. A data set with multiple correlated variables is hard to
+        represent, analyze, and understand because humans cannot perceive a 12-dimensional
+        space directly. Correlated variables might also carry redundant information.
+        PCA changes the variables in the original data set into new uncorrelated axes
+        called **principal components**, where the first principal component explains the
+        most variance and each subsequent one explains the maximum variance after being
+        orthogonal to all previous ones.
 
-        **Eigenvectors** determine the directions of the new axes, and their associated
-        **eigenvalues** quantify how much variance those directions explain. Variable
-        loadings show how strongly each original measure contributes to a component.
-        Scikit-learn computes this transformation efficiently through Singular Value
-        Decomposition (SVD), which is mathematically connected to the eigen-decomposition
-        of the covariance matrix. Dimensionality reduction can reveal broad patterns,
-        reduce redundancy, support visualization, and simplify later models. Its tradeoff
-        is information loss: a two-component view is useful only when the percentage of
-        retained variance is stated clearly.
+        **Eigen-vectors** define the direction of the new axis while the **Eigen-values**
+        provide the amount of variance explained by those directions. The loadings of
+        variables tell us about the contribution of the original variables towards
+        any component. Sklearn makes use of SVD (Singular Value Decomposition) that
+        has a mathematical relationship with the eigen-decomposition of the covariance
+        matrix. Information loss is the drawback of dimensionality reduction as it helps
+        in finding out the overall patterns and reduces redundancies. It only makes sense
+        when the percentage of variance retained is mentioned explicitly.
         """
     )
 
@@ -333,12 +331,12 @@ def render_pca_page():
     st.header("Data Prep")
     st.markdown(
         """
-        PCA requires numeric features measured across the same observations. It is
-        sensitive to scale, so the same 12 reverse-coded relationship and independence
-        variables used for clustering were median-imputed and standardized to mean zero
-        and standard deviation one. Respondent IDs, survey weights, labels, and nominal
-        demographic codes were excluded. Standardization ensures that the components
-        represent correlation patterns rather than differences in measurement scale.
+        PCA necessitates numeric features that have been observed on the same set of observations. 
+        This technique is scale dependent; therefore, the 12 reversed relationship and independence
+        variables that were used for clustering were standardized by using the median
+        imputation method, which ensured a zero mean and unit standard deviation.
+        Responder IDs, weights, labels, and categorical demographic variables were
+        removed from the analysis.
         """
     )
     st.image(
@@ -353,10 +351,9 @@ def render_pca_page():
     st.header("Code")
     st.markdown(
         f"""
-        PCA was completed in Python with pandas, NumPy, scikit-learn, Matplotlib,
-        and Seaborn. The notebook standardizes the features, fits all components,
-        calculates explained variance, inspects loadings, and creates a scree plot,
-        biplot, and loading heatmap.
+        The PCA analysis was conducted using Python and the following libraries: pandas, NumPy, 
+        scikit-learn, Matplotlib, and Seaborn. The notebook will standardize features, fit components, 
+        calculate explained variance, examine loadings, and generate a scree plot, biplot, and loading heatmap.
 
         - [PCA analysis notebook]({GITHUB}/04_PCA_Analysis.ipynb)
         - [Reproducible Module 2 analysis script]({GITHUB}/module2_analysis.py)
@@ -403,12 +400,13 @@ def render_pca_page():
     st.plotly_chart(_chart_layout(fig, 520), use_container_width=True)
     st.markdown(
         f"""
-        PC1 explains **{summary['pc1_variance']:.1%}** of the standardized variation and
-        PC2 explains **{summary['pc2_variance']:.1%}**. Together they retain
-        **{summary['pc1_pc2_cumulative_variance']:.1%}**, so a two-dimensional view captures
-        more than half of the dataset's structure. Seven components are required to pass
-        80% cumulative variance. The sharp decline after PC1 shows that the measures share
-        a strong common pattern, but the remaining components preserve meaningful nuances.
+        PC1 accounts for **{summary['pc1_variance']:.1%}** of the standardized variability,
+        while PC2 accounts for **{summary['pc2_variance']:.1%}**. Both together
+        account for **{summary['pc1_pc2_cumulative_variance']:.1%}**, meaning that the two
+        dimensional representation captures more than half of the data variability.
+        Seven components are needed to capture 80% cumulative variance. The steep fall-off
+        from PC1 means that there is high commonality among the variables, but the
+        additional components capture important differences.
         """
     )
 
@@ -449,15 +447,12 @@ def render_pca_page():
     st.plotly_chart(_chart_layout(fig, 650), use_container_width=True)
     st.markdown(
         """
-        Arrows pointing in similar directions represent positively related variables;
-        arrows pointing in opposite directions represent contrasts. PC1 receives strong
-        contributions from parental advice, emotional reliance, relationship quality,
-        and authenticity, so it represents broad **family connection and support**.
-        PC2 is especially associated with financial independence, authenticity,
-        relationship quality, and knowing a parent as a person. Several advice measures
-        point in the opposite PC2 direction, creating an **autonomy-with-connection**
-        contrast. Arrow length reflects how strongly a variable contributes to this
-        two-component view.
+        Arrows which point in a similar direction are indicative of positively correlated variables;
+        arrows which point in opposite directions signify differences. PC1 is highly influenced by parental advice,
+        emotional dependence, relationship, and authenticity; therefore, it denotes family connectivity. PC2 is
+        mainly characterized by financial independence, authenticity, relationship, and knowledge of parents.
+        Several measures of advice show an opposition to PC2; thus, there exists an **autonomy versus connection**
+        difference. The length of arrows denotes the extent of influence on the two component model.
         """
     )
 
@@ -476,29 +471,28 @@ def render_pca_page():
     st.plotly_chart(_chart_layout(fig, 620), use_container_width=True)
     st.markdown(
         """
-        The heatmap makes the component structure explicit. PC1 draws broadly from the
-        relationship and advice variables. PC2 emphasizes financial independence and
-        relational authenticity. PC3 contrasts the parent's emotional reliance on the
-        young adult with preparation and financial independence, revealing reciprocity
-        as another dimension not fully visible in the first two components. Positive and
-        negative signs indicate direction; because the sign of an eigenvector can be
-        reversed without changing the solution, interpretation should focus on relative
-        patterns rather than whether a sign is inherently good or bad.
+        Component Structure Heatmap. Component 1 is based largely on relationship and advice.
+        Component 2 is focused on financial independence and relational authenticity.
+        Component 3 involves reciprocity between the parents' dependence on the
+        young adult and the preparedness of the young adult. This shows that
+        reciprocity was also one of the dimensions which could not be seen in the
+        previous components. The direction of the relationships is indicated by the
+        positive and negative signs. The sign of the eigenvector is arbitrary,
+        and thus the interpretation should be based on the relative patterns.
         """
     )
 
     st.header("Conclusions")
     st.markdown(
         """
-        PCA shows that the twelve measures do not describe one simple scale of dependence
-        versus independence. A large shared dimension reflects family advice, emotional
-        reliance, relationship quality, and authenticity, while a second dimension
-        distinguishes financial autonomy from frequent parental guidance. The results
-        support the project's central idea that becoming independent can occur alongside
-        continued emotional closeness. A young adult may be financially self-sufficient
-        and still maintain a strong parent relationship, or may receive less advice
-        without feeling fully prepared. Reducing the data to principal components makes
-        these broad patterns visible while preserving the caution that nearly half of the
-        variation lies beyond the first two dimensions.
+        The PCA indicates that the twelve indicators do not reflect one unidimensional construct
+        regarding dependence vs. independence. The prominent common factor is related to
+        advice from the family, emotional dependence, relationship quality, and
+        authenticity, while the second factor divides financial independence from
+        parental advising. The findings confirm the core assumption of the project,
+        namely that independence does not necessarily exclude the maintenance of close
+        emotions. A young person can be independent in a financial aspect but at the same
+        time have good relationships with his/her parents, or can have less advice, yet be
+        far from being ready.
         """
     )
