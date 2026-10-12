@@ -435,13 +435,22 @@ def render_pca_page():
             yref="y",
             axref="x",
             ayref="y",
-            text=FEATURE_SHORT_NAMES[feature],
+            text="",
             showarrow=True,
             arrowhead=3,
             arrowwidth=1.6,
             arrowcolor=PALETTE[1],
             font=dict(size=10, color="#183F3A"),
         )
+        fig.add_scatter(
+        x=[x],
+        y=[y],
+        mode="markers",
+        marker=dict(size=16, color="rgba(0,0,0,0.01)"),
+        text=[FEATURE_SHORT_NAMES[feature]],
+        hovertemplate="%{text}<extra></extra>",
+        showlegend=False,
+    )
     fig.add_hline(y=0, line_color="#C8D8D2", line_width=1)
     fig.add_vline(x=0, line_color="#C8D8D2", line_width=1)
     st.plotly_chart(_chart_layout(fig, 650), use_container_width=True)
