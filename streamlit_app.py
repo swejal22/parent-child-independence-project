@@ -1143,7 +1143,34 @@ def pca():
 
 
 def naive_bayes():
-    future_page("Naive Bayes", "Module 3")
+    st.title("Naïve Bayes Classification")
+
+    st.markdown(
+        "### Understanding Young Adult Independence "
+        "Through Supervised Learning"
+    )
+
+    st.header("1. Overview")
+
+    st.subheader("What is Naïve Bayes?")
+    st.markdown("""
+    Add your explanation of Naïve Bayes here.
+    """)
+
+    st.subheader("Multinomial Naïve Bayes")
+    st.markdown("""
+    Add your explanation here.
+    """)
+
+    st.subheader("Bernoulli Naïve Bayes")
+    st.markdown("""
+    Add your explanation here.
+    """)
+
+    st.subheader("Application to Our Research")
+    st.markdown("""
+    Explain how Naïve Bayes connects to young adult independence.
+    """)
 
 
 def decision_trees():
