@@ -172,6 +172,15 @@ def introduction():
     independence means in the United States today.
     """)
 
+    st.markdown(""" 
+    Following the identification of trends in parent-young adult relationships using clustering analysis and PCA, 
+    this research work proceeds towards supervised machine learning techniques. The following stage in this process 
+    will involve the application of Naïve Bayes and Decision Trees analysis for investigating the features that could 
+    be correlated with higher levels of independence among young adults. These tools will allow for an investigation of 
+    the association between financial independence, cohabitation status, and parents’ participation and the different 
+    levels of independence.
+    """)
+
     st.header("Questions Guiding the Study")
 
     questions = [
