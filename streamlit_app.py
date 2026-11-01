@@ -1154,22 +1154,40 @@ def naive_bayes():
 
     st.subheader("What is Naïve Bayes?")
     st.markdown("""
-    Add your explanation of Naïve Bayes here.
+    The Naïve Bayes classifier is an example of supervised machine learning technique which is applied to solve 
+    classification problems. It is based on the Bayes’ rule which is designed to compute probabilities of outcomes
+    on the basis of available information. The name of the algorithm means that it assumes independence of predictors
+    in case of known class. However, it may not necessarily hold true in real-life situations. Naïve Bayes uses
+    probabilities estimated from training sets to categorize new instances. This algorithm is applied in many fields 
+    including but not limited to email spam filtering and sentiment analysis.
     """)
 
     st.subheader("Multinomial Naïve Bayes")
     st.markdown("""
-    Add your explanation here.
+    The Multinomial Naïve Bayes algorithm is a form of Naïve Bayes that is built for nonnegative feature data, 
+    for instance, the number of times a word appears in a document. The algorithm calculates the probability of 
+    each feature in relation to each class and then uses the probabilities in predicting the class an object belongs to. 
+    The algorithm has been found to be useful in classification of documents, e-mails among others. 
+    Even though it is best suited for count data, it may also be used on some nonnegative numerical features.
     """)
 
     st.subheader("Bernoulli Naïve Bayes")
     st.markdown("""
-    Add your explanation here.
+    The next variant of the Naïve Bayes algorithm is Bernoulli Naïve Bayes, which utilizes binary features that are typically 
+    denoted by 0 and 1. It does not consider the frequency of the occurrence of something but the presence or absence of a 
+    specific feature. For instance, if we conduct a survey among youth regarding the receipt of help from parents, one variable 
+    may be whether the person receives such help or not, either yes or no (1 or 0). Bernoulli Naïve Bayes can then make use of 
+    this information for classification purposes.
     """)
 
     st.subheader("Application to Our Research")
     st.markdown("""
-    Explain how Naïve Bayes connects to young adult independence.
+   Here, one might choose to employ Naïve Bayes in the investigation of patterns related to independence in young adults in America. 
+   Features like financial help, housing situation, interaction with parents, and parent involvement would prove to be helpful in
+   classification. If there is an appropriate independence-related feature in the data set, it is possible to train the model to 
+   classify it into categories depending on certain chosen input features. In this way, it would be possible to learn about the 
+   combinations of features that lead to particular results. Finally, the performance of the model could be analyzed through the 
+   use of a separate test data set, a confusion matrix, and accuracy.
     """)
 
 
