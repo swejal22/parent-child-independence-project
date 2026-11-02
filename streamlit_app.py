@@ -1306,8 +1306,259 @@ def naive_bayes():
 
 
 
+
 def decision_trees():
-    future_page("Decision Trees", "Module 3")
+    st.title("Decision Tree Classification")
+
+    st.markdown(
+        "#### Understanding Financial Independence "
+        "Through Decision Tree Models"
+    )
+
+    # 1. OVERVIEW
+    st.header("1. Overview")
+
+    st.subheader("What is a Decision Tree?")
+    st.markdown("""
+    Decision Tree is a supervised learning method that is utilized in classification and regression problems. 
+    This method divides the data set in smaller subsets on the basis of specific attributes and conditions. 
+    A Decision Tree starts with root nodes that have the whole data set. Branches are created through making decisions 
+    at each node. Decision Tree helps in understanding how various attributes affect classification decisions because of 
+    its structure. For this research project, Decision Trees will be used to categorize young people into various financial 
+    independence categories.
+    """)
+
+    st.subheader("Decision Tree Structure")
+
+    st.image(
+        "dt_tree_1.png",
+        caption="Decision Tree using Gini impurity (depth 3)",
+        use_container_width=True
+    )
+
+    st.image(
+        "dt_tree_3.png",
+        caption="Decision Tree using entropy (depth 5)",
+        use_container_width=True
+    )
+
+    st.subheader("Gini Impurity")
+    st.markdown("""
+    Gini impurity is a measure of how mixed the classes are in the node of a Decision Tree. 
+    Gini impurity of a node is zero if all observations of the node belong to the same class. 
+    The more classes are mixed, the higher is Gini impurity. When fitting the tree, the algorithm checks 
+    potential splits and usually picks the split which causes maximum decrease in weighted Gini impurity.
+    """)
+
+    st.subheader("Entropy")
+    st.markdown("""
+    Entropy is also an indicator which is used in order to calculate uncertainty in Decision Tree nodes. 
+    In cases when all observations pertain to one class only, entropy will be equal to zero. As the number 
+    of classes is distributed evenly among observations, entropy becomes greater. With the help of entropy, 
+    Decision Trees can select better splits to create more homogeneous groups.
+    """)
+
+    st.subheader("Information Gain")
+    st.markdown("""
+    The Information Gain is the amount of reduction of the entropy after splitting the parent node into child nodes. 
+    The formula to calculate the information gain is the entropy of the parent node minus the weighted average entropy 
+    of the child nodes. Higher the information gain, lower is the uncertainty due to a split. When entropy is used as 
+    a splitting function, the Decision Trees will always select the highest information gain split.
+    """)
+
+    st.subheader("Example of a Decision Tree Split")
+
+    col1, col2 = st.columns(2)
+    col1.metric("Parent Gini", "0.5000")
+    col2.metric("Child Weighted Gini", "0.4167")
+
+    st.metric("Gini Reduction", "0.0833")
+    st.metric("Information Gain", "0.1245 bits")
+
+    st.markdown("""
+    Let us imagine a sample consisting of ten observations where five belong to classes A and B respectively. The Gini 
+    impurity and entropy for the parent node will be 0.5000 and 1.0000 bits correspondingly. Imagine that we split our 
+    sample into two parts: in the first part, there will be three observations of Class A and one observation of Class B; 
+    in the second part, there will be two observations of Class A and four observations of Class B. As a result of splitting, 
+    the weighted Gini impurity equals 0.4167, which is the decrease by 0.0833. Entropy also will be reduced up to 0.8755 bits, 
+    resulting in information gain of 0.1245 bits.
+    """)
+
+    st.subheader("Why Can Different Trees Be Created?")
+    st.markdown("""
+    There can be multiple Decision Trees built using one particular dataset as there is more than one way to split observations 
+    according to their features. The criteria that we use for splitting, such as the maximal depth of the tree, the available features, 
+    or the minimal number of observations necessary to perform a split, will give us various Decision Trees. Using different thresholds 
+    for numerical features will also give different Decision Tree results. If there are no constraints set, trees will become more and 
+    more complex and will start to memorize the training data patterns, which will lead to overfitting. Constraining tree depth and 
+    complexity is important for achieving this balance.
+    """)
+    
+    # -----------------------------------------------------
+    # 2. DATA PREPARATION
+    # -----------------------------------------------------
+    st.header("2. Data Preparation")
+
+    st.markdown("""
+    In the case of Decision Tree classification, the same data set used for Naïve Bayes algorithm was used to preserve consistency between 
+    both machine learning algorithms. Initially, there were 1,495 observations and 30 variables in the data set. However, after choosing 6 
+    features as inputs and financial independence as the output variable, 17 data points with missing values were deleted. Hence, 
+    there remained 1,478 observations. The chosen six features were parent’s support, accommodation, parental influence, communication 
+    satisfaction, employment status, and age group. In order to represent these categorical variables numerically, one-hot encoding 
+    technique was used to create 18 binary variables.
+
+    The dataset after cleaning was split into 80% training set which had 1,182 observations and 20% testing set which had 296 observations. 
+    Stratified sampling technique was employed in order to have about an equal distribution of the five categories of financial independence
+    in both sets. The training set was used in order to build three decision tree models using varying splitting criteria and maximum depth, 
+    while the test set was left aside to evaluate their performances. There was no overlap between the two sets at all in order to avoid data
+    leakage.
+    """)
+
+    st.subheader("Labeled Dataset")
+
+    labeled_data = pd.read_csv("dt_labeled_data.csv")
+    st.dataframe(labeled_data.head(), use_container_width=True)
+
+    st.image(
+        "dt_labeled_sample.png",
+        caption="Sample of the labeled Decision Tree dataset",
+        use_container_width=True
+    )
+
+    st.markdown(
+        "[View labeled dataset on GitHub]"
+        "(https://github.com/swejal22/parent-child-independence-project/blob/main/dt_labeled_data.csv)"
+    )
+
+    st.subheader("Training and Testing Datasets")
+
+    train_data = pd.read_csv("dt_training_data.csv")
+    test_data = pd.read_csv("dt_testing_data.csv")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.markdown("**Training Dataset**")
+        st.dataframe(train_data.head(), use_container_width=True)
+        st.image("dt_training_sample.png",
+                 use_container_width=True)
+
+    with col2:
+        st.markdown("**Testing Dataset**")
+        st.dataframe(test_data.head(), use_container_width=True)
+        st.image("dt_testing_sample.png",
+                 use_container_width=True)
+
+    st.image(
+        "dt_train_test_split.png",
+        caption="Stratified 80/20 training and testing split",
+        use_container_width=True
+    )
+
+    repo = "https://github.com/swejal22/parent-child-independence-project/blob/main/"
+
+    st.markdown(
+        f"[Training dataset]({repo}dt_training_data.csv)"
+        " | "
+        f"[Testing dataset]({repo}dt_testing_data.csv)"
+    )
+
+    # -----------------------------------------------------
+    # 3. PYTHON CODE
+    # -----------------------------------------------------
+    st.header("3. Python Implementation")
+
+    st.markdown(
+        "[View Decision Tree Analysis Notebook on GitHub]"
+        f"({repo}06_Decision_Tree_Analysis.ipynb)"
+    )
+
+    # -----------------------------------------------------
+    # 4. RESULTS
+    # -----------------------------------------------------
+    st.header("4. Results")
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Best Tree Accuracy", "59.12%")
+    col2.metric("Training Records", "1,182")
+    col3.metric("Testing Records", "296")
+
+    st.subheader("Comparison of Three Decision Trees")
+
+    comparison = pd.read_csv("dt_model_comparison.csv")
+    st.dataframe(comparison, use_container_width=True)
+
+    st.image(
+        "dt_model_comparison.png",
+        caption="Accuracy, balanced accuracy, and Macro F1",
+        use_container_width=True
+    )
+
+    st.subheader("Tree 1: Gini — Maximum Depth 3")
+
+    st.image("dt_tree_1.png", use_container_width=True)
+    st.image("dt_confusion_matrix_1.png",
+             use_container_width=True)
+
+    st.subheader("Tree 2: Gini — Maximum Depth 5")
+
+    st.image("dt_tree_2.png", use_container_width=True)
+    st.image("dt_confusion_matrix_2.png",
+             use_container_width=True)
+
+    st.subheader("Tree 3: Entropy — Maximum Depth 5")
+
+    st.image("dt_tree_3.png", use_container_width=True)
+    st.image("dt_confusion_matrix_3.png",
+             use_container_width=True)
+
+    st.subheader("Feature Importance")
+
+    st.image(
+        "dt_feature_importance.png",
+        caption="Important features identified by Tree 2",
+        use_container_width=True
+    )
+
+    st.markdown("""
+    Three Decision Tree models were created using various types 
+    of splitting criterion and maximum depth of the tree to 
+    analyze the financial independence classification in young adults. 
+    In the first case, a decision tree was built using the Gini criterion 
+    with the maximum depth of 3, which yielded 58.45% accuracy. In the second case, 
+    a decision tree was built using the Gini criterion with the maximum depth of 5, 
+    which yielded the best result with 59.12% accuracy and macro F1 score 0.4074. In the last case, 
+    the decision tree was created using entropy criterion with the maximum depth of 5, which resulted in 58.45% accuracy.
+
+    From the confusion matrices above, one can note that all the three algorithms were able to perform better when it came to 
+    predicting Category 1, compared to the other less prevalent financial independence categories. This could be attributed 
+    to the unbalanced nature of the observations of the five target variables. In the feature importance of the second tree, 
+    it is clear that financial aid from parents and living situation were the two important predictors for the model. 
+    Some predictions depended on the employment status, satisfaction with communication, and age group.
+    """)
+
+    # -----------------------------------------------------
+    # 5. CONCLUSIONS
+    # -----------------------------------------------------
+    st.header("5. Conclusions")
+
+    st.markdown("""
+    The Decision Tree analysis brought about additional information regarding how certain variables may be linked to financial 
+    independence of young people in the US. With the use of such variables as financial assistance, housing, parental involvement, 
+    satisfaction with communication, employment status, and age groups, it became possible to reveal the relationships in order to 
+    be able to classify the cases into financial independence categories. Out of all three models created, the Gini Decision Tree 
+    with maximum depth of 5 was the most accurate one, as its accuracy rate was 59.12%.
+
+    While the predictive power of the Decision Tree models was shown, their performance as a whole was quite moderate. 
+    It was also evident from the analysis of the confusion matrix that the models performed better on classification of frequently 
+    occurring classes as compared to infrequent ones, which implies that class imbalance might have negatively impacted the results. 
+    However, in comparison with the Naïve Bayes classifier, the best-performing Decision Tree showed the same level of accuracy, 
+    but a higher macro F1-score. This result implies that financial independence has complex dependencies that might not be captured 
+    using the chosen variables.
+    """)
+
+
 
 
 def svms():
