@@ -1230,6 +1230,11 @@ def naive_bayes():
     labeled_data = pd.read_csv("nb_labeled_data.csv")
 
     st.dataframe(labeled_data.head(), use_container_width=True)
+    st.image(
+        "nb_labeled_sample.png",
+        caption="Sample of the labeled Naïve Bayes dataset",
+        use_container_width=True
+    )
 
     st.markdown(
         "[View the labeled dataset on GitHub]"
@@ -1246,10 +1251,20 @@ def naive_bayes():
     with col1:
         st.markdown("**Training Data Sample**")
         st.dataframe(train_data.head(), use_container_width=True)
+        st.image(
+            "nb_training_sample.png",
+            caption="Naïve Bayes Training Dataset Sample",
+            use_container_width=True
+        )
 
     with col2:
         st.markdown("**Testing Data Sample**")
         st.dataframe(test_data.head(), use_container_width=True)
+        st.image(
+            "nb_testing_sample.png",
+            caption="Naïve Bayes Testing Dataset Sample",
+            use_container_width=True
+        )
 
     st.image(
         "nb_train_test_split.png",
