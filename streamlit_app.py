@@ -1210,6 +1210,21 @@ def naive_bayes():
     survey data provide nonnegative input to this classification problem.
      """)
 
+    st.subheader("Financial Independence Categories")
+
+    category_labels = pd.DataFrame({
+        "Code": [1, 2, 3, 4, 5],
+        "Financial Independence Level": [
+            "Completely independent",
+            "Mostly independent",
+            "Somewhat independent",
+            "A little independent",
+            "Not at all independent"
+        ]
+    })
+
+    st.dataframe(category_labels, hide_index=True)
+
     st.subheader("Labeled Dataset")
 
     labeled_data = pd.read_csv("nb_labeled_data.csv")
@@ -1392,6 +1407,8 @@ def decision_trees():
     for numerical features will also give different Decision Tree results. If there are no constraints set, trees will become more and 
     more complex and will start to memorize the training data patterns, which will lead to overfitting. Constraining tree depth and 
     complexity is important for achieving this balance.
+    For the numerical features that can take continuous values, there can be an infinite number of potential split points to consider. 
+    But on the finite dataset, there will always be a finite set of such split points.
     """)
     
     # -----------------------------------------------------
@@ -1413,6 +1430,22 @@ def decision_trees():
     while the test set was left aside to evaluate their performances. There was no overlap between the two sets at all in order to avoid data
     leakage.
     """)
+    st.subheader("Financial Independence Categories")
+
+    category_labels = pd.DataFrame({
+        "Code": [1, 2, 3, 4, 5],
+        "Financial Independence Level": [
+            "Completely independent",
+            "Mostly independent",
+            "Somewhat independent",
+            "A little independent",
+            "Not at all independent"
+        ]
+    })
+
+    st.dataframe(category_labels, hide_index=True)
+
+    
 
     st.subheader("Labeled Dataset")
 
