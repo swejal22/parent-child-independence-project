@@ -1195,6 +1195,20 @@ def naive_bayes():
     # 2. DATA PREPARATION
     # -----------------------------------------------------
     st.header("2. Data Preparation")
+    st.markdown("""
+    For the Naïve Bayes classifier, the dataset was preprocessed through the use of survey data about parent-young adult relationship 
+    and financial independence in the US. The original dataset had 1,495 records and 30 attributes. Following the selection of six input 
+    attributes and the output attribute which is financial independence, 17 observations having missing values were dropped and there 
+    remained 1,478 observations. These attributes include financial support from parents, housing, parent involvement, satisfaction 
+    in communication, employment status, and age category. Because these attributes had categorical data, one-hot encoding was used to 
+    make 18 binary attributes for the Multinomial Naïve Bayes Classifier.
+
+    The data after cleaning was split into 80% training set (1,182 data points) and 20% testing set (296 data points) based on stratified
+    sampling to preserve the same proportion of the five financial independence classes. The training set is used for developing the 
+    classifier, whereas the test set is used to determine the performance of the classifier. The two datasets are kept separate, and there
+    are no overlaps at all in order to avoid data leakage. Despite being a classifier which works best on count data, the one-hot encoded 
+    survey data provide nonnegative input to this classification problem.
+     """)
 
     st.subheader("Labeled Dataset")
 
@@ -1250,6 +1264,14 @@ def naive_bayes():
     # 4. RESULTS
     # -----------------------------------------------------
     st.header("4. Results")
+    st.markdown("""
+    The Multinomial Naïve Bayes classifier yielded an accuracy rate of 59.12% with respect to the test data set, which correctly 
+    identified 175 out of 296 observations. The confusion matrix further reveals that the classifier was most effective in identifying 
+    the observations within Category 1, which successfully classified 128 out of 157 observations. This can be contrasted against the 
+    fact that the classifier did not perform well when it came to Categories 3, 4, and 5, whereby fewer observations were correctly 
+    identified by the classifier. One probable reason could be the skewed nature of the categories, whereby Category 1 had significantly
+    more observations than the rest.
+    """)
 
     col1, col2, col3 = st.columns(3)
 
@@ -1270,8 +1292,16 @@ def naive_bayes():
     # -----------------------------------------------------
     st.header("5. Conclusions")
     st.markdown("""
-    Add your interpretation of the model's findings and
-    limitations here.
+    From the results of the Multinomial Naïve Bayes analysis, we get the first insights into the possibility of predicting 
+    financial independence categories based on various factors. With the help of the data on parental financial aid, living conditions,
+    parental participation, communication satisfaction, employment, and age group, we managed to obtain the following result in 
+    terms of the overall accuracy – 59.12%.
+
+    From the confusion matrix, it can be observed that the classifier performs relatively well when predicting the category with the 
+    highest probability in the sample. However, the results are poorer when predicting other categories due to class imbalance. 
+    It is thus possible to conclude that the selected variables do not fully describe the factors responsible for the financial 
+    independence of the population. Moreover, Naïve Bayes assumes that the features are independent; however, the factors being 
+    considered are not. For example, financial support and living situation can affect each other.
     """)
 
 
