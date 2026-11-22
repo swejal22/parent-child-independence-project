@@ -180,6 +180,21 @@ def introduction():
     the association between financial independence, cohabitation status, and parents’ participation and the different 
     levels of independence.
     """)
+    st.markdown("""
+    To further analyze the connection between parents' engagement
+    and independence of their young adults in the USA, this project
+    will employ such machine learning approaches as linear
+    regression, logistic regression, and AdaBoost. Linear regression
+    will assist in analyzing the association between various
+    economic, demographic, and familial characteristics and
+    quantitative measures of independence, whereas logistic
+    regression will predict the probability of young adults' financial
+    independence. Also, AdaBoost algorithm involves training of many
+    weak learners on those observations misclassified by previous
+    algorithms. Using this approach alongside already implemented
+    Naïve Bayes and Decision Tree models, we can find interesting
+    patterns, assess their predictive ability, and better understand.
+    """)
 
     st.header("Questions Guiding the Study")
 
@@ -1609,16 +1624,1064 @@ def decision_trees():
 
 
 
-def svms():
-    future_page("Support Vector Machines", "Module 4")
-
-
 def regression():
-    future_page("Regression", "Module 5")
+    st.title("Regression")
+
+    st.header("1. Overview")
+
+    st.markdown("""
+    Regression analysis is a type of supervised learning method used
+    to examine the associations between independent predictors and a dependent variable.
+    For this study, linear regression and logistic regression models have been used
+    to analyze factors related to young adult independence in the USA.
+    """)
+
+    st.subheader("Linear Regression")
+
+    st.markdown("""
+    Linear regression makes prediction for a numeric target variable
+    using a linear approach between the independent variables
+    and the dependent variable. Linear regression attempts to
+    minimize the sum of squared differences between the observed
+    and predicted values.
+
+    In this research, linear regression will help explore the relationship between
+    demographic, economic, and family-based variables
+    and a quantitative indicator of independence.
+    """)
+
+    st.latex(r"\hat{y}=\beta_0+\beta_1x_1+\cdots+\beta_px_p")
+
+    st.markdown("""
+    In this case, the intercept is the prediction of the
+    outcome when all predictors are zero, whereas each coefficient
+    is the prediction of the change in the outcome by one unit of
+    its respective predictor, while all others are held constant.
+    """)
+    
+    st.image(
+         "linear_regression_overview.png",
+          caption="Figure 1: Linear regression with a fitted line and residuals."
+    )
+    st.subheader("Logistic Regression")
+
+    st.markdown("""
+    As opposed to linear regression, logistic regression is employed for
+    classification purposes. Binary logistic regression determines the
+    probability of belonging to one of two categories.
+
+    In the model, first a linear score is calculated,
+    after which the sigmoid function is used
+    to convert that score to probability.
+    """)
+
+    st.latex(r"z=\beta_0+\beta_1x_1+\cdots+\beta_px_p")
+
+    st.latex(r"P(Y=1|X)=\frac{1}{1+e^{-z}}")
+
+    st.markdown("""
+    By using a threshold for classification as 0.5, we assign all the 
+    probabilities greater than or equal to 0.5 to class 1 and all those 
+    less than 0.5 to class 0.
+
+    Logistic regression is a useful tool that can be applied
+    for predicting the financial independence of young people by
+    using certain predictor variables.
+    """)
+    st.image(
+         "logistic_regression_overview.png",
+          caption="Figure 2: Sigmoid function and the binary classification threshold."
+    )
+    st.subheader("Linear Regression vs. Logistic Regression")
+
+    st.table({
+        "Feature": [
+            "Purpose",
+            "Target Variable",
+            "Output",
+            "Function",
+            "Evaluation"
+        ],
+        "Linear Regression": [
+            "Numerical prediction",
+            "Continuous",
+            "Numerical value",
+            "Linear function",
+            "RMSE, MAE, R-squared"
+        ],
+        "Logistic Regression": [
+            "Classification",
+            "Binary categorical",
+            "Probability and class",
+            "Sigmoid function",
+            "Accuracy, confusion matrix"
+        ]
+    })
+    st.header("2. Data Prep")
+
+    st.markdown("""
+    The data that were used in conducting the regression analysis have been obtained from
+    the Pew Research Center survey on parent-child relationship in the United States.
+
+    Prepared data have 1,478 observations,
+    six predictor variables, and two target
+    variables. There is no missing value in the dataset.
+    """)
+
+    st.subheader("Predictor Variables")
+
+    st.markdown("""
+    - Received financial help
+    - Living arrangements with parents
+    - Parental involvement level
+    - Communication satisfaction
+    - Employment status
+    - Age group
+    """)
+
+    st.subheader("Target Variables")
+
+    st.markdown("""
+    Two target variables were created from the original
+    financial independence survey responses.
+
+    **Linear Regression:** The codes for the financial
+    independence variable have been inverted, such that the
+    new numerical score is between 1 and 5,
+    with higher scores indicating greater financial
+    independence.
+
+    **Logistic Regression:** The five different categories of
+    respondents have been collapsed into two categories.
+    Those who are completely or mostly financially
+    independent have class 1, while the other groups fall
+    under class 0.
+    """)
+
+    st.table({
+        "Survey Response": [
+            "Completely",
+            "Mostly",
+            "Somewhat",
+            "A little",
+            "Not at all"
+        ],
+        "Linear Target": [5, 4, 3, 2, 1],
+        "Logistic Target": [1, 1, 0, 0, 0]
+    })
+
+    repo_url = (
+        "https://github.com/swejal22/"
+        "parent-child-independence-project/blob/main/"
+    )
+
+    st.subheader("Labeled Dataset")
+
+    st.image(
+        "regression_labeled_sample.png",
+        caption="Sample of the prepared labeled dataset."
+    )
+
+    st.markdown(
+        f"[View labeled dataset (CSV)]"
+        f"({repo_url}regression_labeled_data.csv)"
+    )
+
+    st.subheader("Training and Testing Sets")
+
+    st.markdown("""
+    The dataset was split into 80% training set and
+    20% test set by stratified sampling, random_state=42.
+
+    Stratification ensured that the distribution of binary
+    financial independence categories was maintained in both
+    datasets.
+
+    There is no overlap between the training and testing
+    sets, which means that no row is present in both. It
+    avoids any data leakage and helps evaluate the models
+    on unseen rows.
+
+    All columns related to the target variable were
+    dropped from the predictor variables.
+    """)
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Total Observations", "1,478")
+    col2.metric("Training Set", "1,182")
+    col3.metric("Testing Set", "296")
+
+    st.image(
+        "regression_training_sample.png",
+        caption="Sample of the training dataset."
+    )
+
+    st.markdown(
+        f"[View training dataset (CSV)]"
+        f"({repo_url}regression_training_data.csv)"
+    )
+
+    st.image(
+        "regression_testing_sample.png",
+        caption="Sample of the testing dataset."
+    )
+
+    st.markdown(
+        f"[View testing dataset (CSV)]"
+        f"({repo_url}regression_testing_data.csv)"
+    )
+
+    st.subheader("Categorical Feature Encoding")
+
+    st.markdown("""
+    The initial predictors were coded using numerical
+    codes, but these codes were categories from the
+    surveys, not continuous variables.
+
+    The predictors were transformed into twelve binary
+    variables using one-hot encoding of the six initial
+    predictors, where one reference category per each predictor
+    was removed.
+
+    The fit method of the encoder was used only for the
+    training set and then applied for the testing set.
+    """)
+
+    st.image(
+        "regression_before_encoding.png",
+        caption="Original categorical predictors before encoding."
+    )
+
+    st.image(
+        "regression_after_encoding.png",
+        caption="Twelve binary predictors after one-hot encoding."
+    )
+
+    st.markdown(
+        f"[View encoded training dataset (CSV)]"
+        f"({repo_url}regression_encoded_training_data.csv)"
+    )
+
+    st.markdown(
+        f"[View encoded testing dataset (CSV)]"
+        f"({repo_url}regression_encoded_testing_data.csv)"
+    )
+
+    st.header("3. Code")
+
+    st.markdown("""
+    Both Linear Regression and Logistic Regression were built using 
+    Python and scikit-learn.
+
+    Pandas and NumPy were utilized in data preparation,
+    while visualization was done using Matplotlib and Seaborn.
+
+    The entire code includes the following aspects: data preparation, 
+    feature encoding, training, evaluating the models, interpreting the coefficients,
+    and comparing Logistic Regression with Multinomial Naive Bayes..
+    """)
+
+    st.markdown(
+        f"[View complete Regression Python notebook]"
+        f"({repo_url}07_Regression_Analysis.ipynb)"
+    )
+
+    st.header("4. Results")
+
+    st.subheader("Linear Regression Results")
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("RMSE", "0.8788")
+    col2.metric("MAE", "0.5815")
+    col3.metric("R-squared", "0.5025")
+
+    st.markdown("""
+    The Linear Regression model was able to attain an RMSE of
+    0.8788, an MAE of 0.5815, and an R-squared score
+    of 0.5025 using the test data.
+
+    On average, the differences between the predicted and
+    actual financial independence scores are approximately 0.58
+    points on a scale of 1 to 5.
+
+    The R-squared score means that the variance explained
+    by the Linear Regression model is 50.25%.
+    """)
+
+    st.image(
+        "regression_actual_vs_predicted.png",
+        caption="Actual versus predicted financial independence scores."
+    )
+
+    st.markdown("""
+    The red dotted line is for perfect prediction.
+    Predicted values far away from this line mean
+    that the error is bigger.
+
+    The regression model usually gives higher
+    prediction values for higher actual values.
+    But the regression model usually overestimates
+    independence for the respondents with the lowest
+    actual value.
+
+    There are some predicted values that go beyond 5
+    because Linear Regression does not limit the
+    predicted values to the actual scale.
+    """)
+
+    st.subheader("Linear Regression Coefficient Analysis")
+
+    st.image(
+        "regression_linear_coefficients.png",
+        caption="Linear Regression coefficients relative to reference categories."
+    )
+
+    st.markdown("""
+    **Part-Time Work (-0.5181):**
+
+    The youth working part-time are expected to have
+    financial independence levels that are about 0.52
+    points less than those of young adults who work full-time,
+    all else being equal.
+
+    **Not Working for Payment (-0.5838):**
+
+    The youth not currently working for payment are expected
+    to have financial independence levels that are about 0.58
+    points less than those of young adults who work full-time,
+    all else being equal.
+
+    **Age Groups (+0.2223):**
+
+    The youth aged between 30 and 34 are expected to have
+    financial independence levels that are about 0.22 points
+    more than those aged between 18 and 29, all else being equal.
+
+    These coefficients are predictive and not causal.
+    """)
+
+    st.markdown(
+        f"[View Linear Regression coefficients (CSV)]"
+        f"({repo_url}regression_linear_coefficients.csv)"
+    )
+
+    st.subheader("Logistic Regression Results")
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Test Accuracy", "86.82%")
+    col2.metric("Correct Predictions", "257 / 296")
+    col3.metric("Majority Baseline", "76.01%")
+
+    st.image(
+        "regression_logistic_confusion_matrix.png",
+        caption="Confusion matrix for binary Logistic Regression."
+    )
+
+    st.markdown("""
+    The Logistic Regression model identified
+    257 out of 296 testing samples with an
+    accuracy of 86.82%.
+
+    In the confusion matrix, there are 45 correct
+    classifications of lower independence and 212
+    correct classifications of high independence.
+
+    There are 26 lower-independence cases that have been
+    falsely identified as high independence cases and
+    13 high-independence cases that have been falsely
+    identified as lower independence cases.
+
+    The recall rate for the high independence class is
+    about 94%, whereas that for the lower independence
+    class is 63%.
+
+    Thus, the model is better at classifying the majority
+    class, and the accuracy is not enough to characterize its performance.
+    """)
+
+    st.subheader("Logistic Regression Odds Ratios")
+
+    st.latex(r"\text{Odds Ratio}=e^{\beta}")
+
+    st.image(
+        "regression_logistic_odds_ratios.png",
+        caption="Estimated odds ratios for financial independence."
+    )
+
+    st.markdown("""
+    **Part-time Employment:**
+
+    The coefficient is -1.3301, with an odds ratio
+    of 0.2645. Young adults employed in part-time jobs
+    have about 73.55% reduced predicted odds of being financially
+    independent compared to young adults in full-time employment,
+    all else being equal.
+
+    **Not Currently Employed for Pay:**
+
+    The coefficient is -1.4531, with an odds ratio
+    of 0.2338. Young adults who are not currently employed
+    for pay have about 76.62% reduced predicted odds of being
+    financially independent compared to young adults in full-time
+    employment.
+
+    **Age Group:**
+
+    The coefficient is 0.5176, with an odds ratio
+    of 1.6780. Young adults aged 30-34 have about 67.80%
+    increased predicted odds of being financially independent
+    than young adults aged 18-29 years old.
+
+    Odds change is not the same as probability change.
+    """)
+
+    st.markdown(
+        f"[View Logistic Regression coefficients (CSV)]"
+        f"({repo_url}regression_logistic_coefficients.csv)"
+    )
+
+    st.subheader("Comparison with Naive Bayes")
+
+    st.markdown("""
+    The first Multinomial Naive Bayes Classifier built
+    in Module 3 has an accuracy rate of 59.12% for
+    classification into five groups of financial independence.
+
+    As Logistic Regression classifies into two groups,
+    the accuracies cannot be compared directly.
+
+    Therefore, Multinomial Naive Bayes was trained again,
+    using the same binary output and the same observations
+    for training and testing as Logistic Regression did.
+    Each classification algorithm used the respective encoding.
+    """)
+
+    st.table({
+        "Model": [
+            "Majority-Class Baseline",
+            "Binary Naive Bayes",
+            "Logistic Regression"
+        ],
+        "Test Accuracy": [
+            "76.01%",
+            "86.49%",
+            "86.82%"
+        ]
+    })
+
+    st.image(
+        "regression_model_comparison.png",
+        caption="Test accuracy comparison using the same binary target."
+    )
+
+    st.markdown("""
+    Logistic Regression was slightly more accurate
+    than binary Naive Bayes, having a marginally greater
+    accuracy by 0.34 percent.
+
+    Nevertheless, there was only a single observation more
+    that Logistic Regression classified correctly than Naive
+    Bayes.
+
+    Naive Bayes had a better recall rate for lower
+    financial independence cases (69%) compared to
+    Logistic Regression (63%).
+
+    The two models were better than the baseline model,
+    yet none of them showed dominance over another.
+    """)
+
+    st.markdown(
+        f"[View model comparison results (CSV)]"
+        f"({repo_url}regression_model_comparison.csv)"
+    )
+
+    st.markdown(
+        f"[View all regression evaluation metrics (CSV)]"
+        f"({repo_url}regression_evaluation_metrics.csv)"
+    )
+
+    st.header("5. Conclusions")
+
+    st.markdown("""
+    The results obtained from the regression
+    analysis shed light on the relationship between
+    the socioeconomic and family-related factors and
+    financial independence of young adults in the
+    United States.
+
+    The Linear Regression model explains about
+    half of the variance in the financial
+    independence scores. Employment, living
+    arrangements, financial assistance, and age were
+    found to predict financial independence.
+
+    Young adults employed part time or without
+    current paid work had lower predicted
+    financial independence scores than the full-time
+    workers. Older young adults had higher
+    predicted financial independence scores.
+
+    Logistic Regression model reached an accuracy
+    of 86.82%, and binary Naive Bayes model - 86.49%.
+    Both models show the practicality of the
+    predictors chosen.
+
+    The results suggest that the financial
+    independence is related to multiple
+    socioeconomic and family-related variables but
+    not just one.
+
+    Nevertheless, there are some limitations that
+    should be addressed. Linear Regression model
+    treats an ordinal variable as a numeric one,
+    and the binary classification ignores the
+    original five categories of the survey. There
+    is also a problem of class imbalance, and no
+    survey weights were used in the models.
+
+    Thus, the above results are only predictive
+    associations of the analyzed sample data.
+    """)
+
+def adaboost():
+    st.title("AdaBoost")
+
+    st.header("1. Overview")
+
+    st.markdown("""
+      AdaBoost, also referred to as Adaptive Boosting, is
+      an ensemble machine learning algorithm that utilizes
+      a number of weak classifiers to form a strong classifier.
+
+      The application of AdaBoost algorithm in this project
+      is for classifying young adults into two groups:
+      those with high financial independence and those with
+      lower financial independence.
+    """)
+
+    st.subheader("Boosting vs. Bagging")
+
+    st.markdown("""
+    Bagging and boosting are two ensemble methods,
+    though they are different in training the individual models.
+
+    The bagging method trains multiple models separately
+    through bootstrapping and makes predictions by
+    voting or averaging.
+
+    The boosting method trains multiple models one after another
+    with the next model concentrating on instances wrongly classified by the previous models.
+    """)
+
+    st.table({
+        "Feature": [
+            "Model Training",
+            "Data Sampling",
+            "Model Dependency",
+            "Final Prediction",
+            "Main Objective"
+        ],
+        "Bagging": [
+            "Independent",
+            "Bootstrap samples",
+            "Independent models",
+            "Majority vote or average",
+            "Reduce variance"
+        ],
+        "Boosting": [
+            "Sequential",
+            "Weighted observations (AdaBoost)",
+            "Dependent models",
+            "Weighted voting (AdaBoost)",
+            "Improve predictive performance"
+        ]
+    })
+    st.image(
+        "adaboost_bagging_vs_boosting.png",
+        caption="Figure 1: Comparison of bagging and boosting."
+    )
+    st.subheader("Decision Stumps")
+
+    st.markdown("""
+    A decision stump consists of a decision tree that has the maximum
+    depth of one. It comprises only one decision and two leaves.
+
+    Though a single decision stump does not have good prediction
+    capacity, AdaBoosting uses several stumps to build a good classifier.
+    """)
+
+    st.subheader("How AdaBoost Works")
+
+    st.markdown("""
+    **Step 1: Initialize observation weights**
+
+    Initially, all training observations receive equal
+    weights.
+    """)
+
+    st.latex(r"w_i=\frac{1}{N}")
+
+    st.markdown("""
+    **Step 2: Train a weak learner**
+
+    A decision stump is trained using the weighted
+    training observations.
+
+    **Step 3: Calculate weighted classification error**
+
+    The weighted error is calculated by adding the
+    weights of incorrectly classified observations.
+    """)
+
+    st.latex(
+        r"\epsilon_t=\sum_{i=1}^{N}"
+        r"w_i I(y_i\neq h_t(x_i))"
+    )
+
+    st.markdown("""
+    **Step 4: Calculate the learner weight (alpha)**
+
+    Alpha represents the weight assigned to each base classifier.
+    The better the performance of a learner,
+    the more weight it gets.
+
+    In the classical binary AdaBoost formulation:
+    """)
+
+    st.latex(
+        r"\alpha_t=\frac{1}{2}"
+        r"\ln\left(\frac{1-\epsilon_t}{\epsilon_t}\right)"
+    )
+
+    st.markdown("""
+    **Step 5: Update observation weights**
+
+    Misclassified samples carry relatively high
+    weights, while correctly classified samples carry low
+    relative weights.
+
+    The weights are normalized such that they sum to one.
+    This makes it possible for later learners to concentrate
+    on hard samples.
+    """)
+
+    st.latex(
+        r"w_i^{(t+1)}="
+        r"\frac{w_i^{(t)}e^{-\alpha_t y_i h_t(x_i)}}{Z_t}"
+    )
+
+    st.markdown("""
+    In this classical formulation, class labels and
+    stump predictions are represented as -1 and +1,
+    and Z is the normalization factor.
+
+    **Step 6: Final weighted prediction**
+
+    Predictions from all weak learners are aggregated using weighted voting. 
+    Those learners having larger alphas contribute more to the final decision process.
+    """)
+
+    st.latex(
+        r"H(x)=\operatorname{sign}"
+        r"\left(\sum_{t=1}^{T}\alpha_t h_t(x)\right)"
+    )
+
+    st.markdown("""
+    These represent the equations for classical binary AdaBoost.
+    scikit-learn implements binary AdaBoost by a formulation
+    called SAMME that is equivalent to the following.
+
+    There are two main hyperparameters that are used: the
+    number of estimators and the learning rate. The number
+    of estimators represents the maximum number of weak
+    learners, while the learning rate represents the contribution
+    of each learner.
+    These parameters will be tuned using validation
+    data rather than the final testing dataset.
+    """)
+    st.image(
+        "adaboost_workflow.png",
+        caption="Figure 2: AdaBoost sequential learning, observation reweighting, and weighted voting."
+    )
+        st.header("2. Data Prep")
+
+    st.markdown("""
+    For training the AdaBoost model, the dataset from the
+    Pew Research Center on associations between parents
+    and young people in America is used.
+
+    The preprocessed dataset has 1,478 observations
+    and 6 independent variables. The initial dependent
+    variable about financial independence has been
+    transformed into two categories for classification.
+
+    Category 1 includes respondents who are fully or mostly
+    financially independent. Category 0 consists of respondents
+    who are somewhat, slightly, or not at all financially independent.
+    """)
+
+    repo_url = (
+        "https://github.com/swejal22/"
+        "parent-child-independence-project/blob/main/"
+    )
+
+    st.subheader("Labeled Dataset")
+
+    st.image(
+        "adaboost_labeled_sample.png",
+        caption="Sample of the labeled dataset used for AdaBoost."
+    )
+
+    st.markdown(
+        f"[View labeled dataset (CSV)]"
+        f"({repo_url}adaboost_labeled_data.csv)"
+    )
+
+    st.subheader("Training and Testing Sets")
+
+    st.markdown("""
+    The data were partitioned into 80% training data and 20%
+    testing data through stratified sampling with random_state=42.
+
+    There are 1,182 samples in the training data and 296 samples in the testing data.
+
+    These two sets are disjoint in that a single person cannot be found in both the training and testing data. 
+    This ensures that there is no data leakage and enables the evaluation of the model on data not seen during the training process.
+
+    Hyperparameter optimization was conducted using five-fold cross validation on the training data set..
+    """)
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Total Observations", "1,478")
+    col2.metric("Training Set", "1,182")
+    col3.metric("Testing Set", "296")
+
+    st.image(
+        "adaboost_training_sample.png",
+        caption="Sample of the training dataset."
+    )
+
+    st.markdown(
+        f"[View training dataset (CSV)]"
+        f"({repo_url}adaboost_training_data.csv)"
+    )
+
+    st.image(
+        "adaboost_testing_sample.png",
+        caption="Sample of the testing dataset."
+    )
+
+    st.markdown(
+        f"[View testing dataset (CSV)]"
+        f"({repo_url}adaboost_testing_data.csv)"
+    )
+
+    st.subheader("Categorical Feature Encoding")
+
+    st.markdown("""
+    These six predictors are coded using numeric values
+    on the surveys but they are actually categories
+    and not continuous values.
+
+    One hot encoding is applied on these six
+    categorical predictors to generate 18 binary
+    predictors.
+
+    All categories are kept since decision stump
+    classifiers do not need to keep any reference
+    category to address multicollinearity.
+
+    Encoder was fitted on training data alone
+    and included in model pipeline during cross-validation
+    to avoid leakage.
+    """)
+
+    st.image(
+        "adaboost_before_encoding.png",
+        caption="Six categorical predictors before one-hot encoding."
+    )
+
+    st.image(
+        "adaboost_after_encoding.png",
+        caption="Eighteen binary predictors after one-hot encoding."
+    )
+
+    st.markdown(
+        f"[View encoded training dataset (CSV)]"
+        f"({repo_url}adaboost_encoded_training_data.csv)"
+    )
+
+    st.markdown(
+        f"[View encoded testing dataset (CSV)]"
+        f"({repo_url}adaboost_encoded_testing_data.csv)"
+    )
+
+        st.header("3. Code")
+
+    st.markdown("""
+    Python programming language and scikit-learn package were utilized in creating and analyzing
+    the AdaBoost classification model.
+
+    The process includes the preparation of the binary outcome variable,
+    splitting the dataset, using one-hot encoding,
+    fitting decision stumps, tuning parameters,
+    and assessment of the final model.
+
+    The pipeline was used for combining preprocessing
+    with AdaBoost classification model. Five-fold stratified cross-validation
+    assisted in finding the optimal number of estimators and learning rate without using
+    the final testing dataset.
+
+    The full Google Colab Notebook with Python implementation and analysis is presented below.
+    Also, the original visualizations and comparison with Decision Tree
+    from Module 3 are included.
+    """)
+
+    st.markdown(
+        f"[View Complete AdaBoost Python Notebook]"
+        f"({repo_url}08_AdaBoost_Analysis.ipynb)"
+    )
+
+    st.subheader("Python Libraries")
+
+    st.code(
+        """from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.model_selection import GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder""",
+        language="python"
+    )
+
+        st.header("4. Results")
+
+    st.subheader("Initial AdaBoost Model")
+
+    st.markdown("""
+    AdaBoost Classifier
+    The first AdaBoost classifier was built by using 50 stumps with a learning rate of 1.0.
+
+    Cross-validation of five folds was done for estimating the performance of the classifier.
+
+    Accuracy achieved by the classifier is 84.60% with a standard deviation of 1.45%..
+    """)
+
+    col1, col2 = st.columns(2)
+
+    col1.metric("Initial Validation Accuracy", "84.60%")
+    col2.metric("Cross-Validation Folds", "5")
+
+    st.subheader("Hyperparameter Tuning")
+
+    st.markdown("""
+    The grid search method known as GridSearchCV was used to analyze 35 different sets
+    of estimators and learning rates.
+
+    The optimal set consisted of 200 estimators
+    and a learning rate of 0.5.
+
+    The optimal set had an accuracy score of 85.03%
+    when using cross-validation, which is 0.42% higher than the original model.
+    """)
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Best Estimators", "200")
+    col2.metric("Best Learning Rate", "0.5")
+    col3.metric("Validation Accuracy", "85.03%")
+
+    st.image(
+        "adaboost_validation_accuracy.png",
+        caption="Mean five-fold validation accuracy across boosting rounds and learning rates."
+    )
+
+    st.markdown("""
+    From the validation results, an increase in
+    the number of estimators does not necessarily
+    lead to an improvement in prediction.
+
+    Small learning rates often need more boosting
+    iterations to have competitive accuracy.
+
+    From the set-up explored, 200 estimators
+    with learning rate of 0.5 generated the best
+    mean validation accuracy.
+    """)
+
+    st.markdown(
+        f"[View Hyperparameter Tuning Results (CSV)]"
+        f"({repo_url}adaboost_hyperparameter_results.csv)"
+    )
+
+    st.subheader("Final AdaBoost Classification Results")
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Testing Accuracy", "87.16%")
+    col2.metric("Correct Predictions", "258 / 296")
+    col3.metric("Majority-Class Baseline", "76.01%")
+
+    st.markdown("""
+    The trained AdaBoost classifier had an accuracy rate of 87.16% for classifying 258
+    out of 296 unseen data points.
+
+    This outperformed the majority class baseline of
+    76.01% by around 11.15 percentage points.
+
+    The model classified 46 data points belonging to low
+    financial independence category and 212 data points
+    belonging to high financial independence category.
+    """)
+
+    st.image(
+        "adaboost_confusion_matrix.png",
+        caption="Confusion matrix for the tuned AdaBoost classifier."
+    )
+
+    st.markdown("""
+     The confusion matrix indicates that 25 people
+     with low financial independence have been
+     incorrectly classified as having high independence.
+
+     Thirteen people with high financial independence
+     have been incorrectly classified as having low 
+     financial independence.
+
+     The recall rate was approximately 65% for low
+     independence class and 94% for the high
+     independence class.
+
+     This indicates that AdaBoost performed better
+     at identifying respondents in the majority class.
+    """)
+
+    st.subheader("Comparison with Module 3 Decision Tree")
+
+    st.markdown("""
+    The initial Decision Tree model from Module 3
+    categorized people into five groups of financial independence.
+
+    Since AdaBoost classifies into two categories, the initial
+    accuracy for the five categories Decision Tree of 59.12%
+    cannot be compared to the accuracy of AdaBoost.
+
+    Thus, the best Decision Tree model, which uses Gini index
+    and has a max_depth of five, was trained on the same
+    data used by AdaBoost.
+    """)
+
+    st.table({
+        "Model": [
+            "Binary Decision Tree",
+            "Tuned AdaBoost"
+        ],
+        "Test Accuracy": [
+            "85.14%",
+            "87.16%"
+        ],
+        "Correct Predictions": [
+            252,
+            258
+        ],
+        "Lower Independence Recall": [
+            "58%",
+            "65%"
+        ]
+    })
+
+    st.image(
+        "adaboost_model_comparison.png",
+        caption="Testing accuracy comparison between the binary Decision Tree and AdaBoost."
+    )
+
+    st.markdown("""
+    The accuracy rate obtained using the Adaboost algorithm was 87.16%,
+    while the Decision Tree obtained an accuracy rate of 85.14%.
+
+    An increase of about
+    2.03% was realized from the Adaboost algorithm.
+
+    Adaboost correctly classified six more respondents and had improved
+    recall for low financial independence.
+
+     The recall of both models for respondents with high financial independence
+     was about 94%.
+
+      In summary, the AdaBoost algorithm performed marginally better than
+      the single Decision Tree algorithm.
+    """)
+
+    st.markdown(
+        f"[View Model Comparison Results (CSV)]"
+        f"({repo_url}adaboost_model_comparison.csv)"
+    )
+
+    st.markdown(
+        f"[View AdaBoost Evaluation Metrics (CSV)]"
+        f"({repo_url}adaboost_evaluation_metrics.csv)"
+    )
+
+        st.header("5. Conclusions")
+
+    st.markdown("""
+    This study aimed to investigate whether the AdaBoost algorithm
+    would be able to forecast financial independence in
+    young Americans through their demographic, socioeconomic,
+    and family-related factors.
+
+    The resulting model obtained an accuracy of 87.16%
+    when applied to the test set, making 258 correct predictions
+    out of 296. The value exceeded the accuracy of the
+    majority-class predictor at 76.01%.
+
+    The hyperparameter optimization indicated that 200
+    estimators and a learning rate of 0.5 delivered the best
+    average cross-validation accuracy of 85.03%.
+
+    Compared to the binary Decision Tree algorithm,
+    which had an accuracy rate of 85.14%, AdaBoost
+    was more accurate by about 2.03%.
+
+    Yet, it is important to note that the model
+    behaved differently based on the two financial
+    independence classes. It managed to classify
+    around 94% of respondents who had high financial
+    independence but could not classify only about
+    65% of respondents who had low independence.
+
+    There are some limitations of the model that
+    need to be noted. First of all, there were
+    five financial independence classes that were.
+
+    Class imbalance is also present in the data as
+    about 76% of participants fall into the high
+    level of independence group. Moreover,
+    survey weights were not used while building
+    the models.
+
+    This study reports on associations and not
+    causation and should not be considered
+    a national sample.
+
+    In conclusion, using AdaBoost, ensemble
+    modeling was shown to be useful in finding
+    the associations between the studied variables
+    related to financial independence. The results
+    also demonstrate the significance of such
+    factors as employment, family support,
+    and living conditions for understanding.
+    """)
+def gradient_boosting():
+    future_page("GradientBoosting", "Module 5")
 
 
-def neural_networks():
-    future_page("Neural Networks", "Module 5")
+def xgboost():
+    future_page("XGBoost", "Module 5")
 
 
 def conclusions():
@@ -1644,9 +2707,10 @@ pages = [
     st.Page(pca, title="PCA"),
     st.Page(naive_bayes, title="NaiveBayes"),
     st.Page(decision_trees, title="DecTrees"),
-    st.Page(svms, title="SVMs"),
     st.Page(regression, title="Regression"),
-    st.Page(neural_networks, title="NN"),
+    st.Page(adaboost, title="AdaBoost"),
+    st.Page(gradient_boosting, title="GradientBoosting"),
+    st.Page(xgboost, title="XGBoost"),
     st.Page(conclusions, title="Conclusions")
 ]
 
