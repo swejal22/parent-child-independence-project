@@ -1,0 +1,7 @@
+Model,Metric,Value
+Initial AdaBoost,Mean CV Accuracy,0.8460344704283773
+Tuned AdaBoost,Best Mean CV Accuracy,0.8502610312522348
+Tuned AdaBoost,Test Accuracy,0.8716216216216216
+Majority-Class Baseline,Test Accuracy,0.7601351351351351
+Binary Decision Tree,Test Accuracy,0.8513513513513513
+Tuned AdaBoost vs. Decision Tree,Accuracy Improvement (percentage points),2.0270270270270285
