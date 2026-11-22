@@ -2627,7 +2627,7 @@ from sklearn.preprocessing import OneHotEncoder""",
         f"({repo_url}adaboost_evaluation_metrics.csv)"
     )
 
-        st.header("5. Conclusions")
+    st.header("5. Conclusions")
 
     st.markdown("""
     This study aimed to investigate whether the AdaBoost algorithm
