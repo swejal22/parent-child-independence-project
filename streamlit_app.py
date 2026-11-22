@@ -2655,9 +2655,12 @@ from sklearn.preprocessing import OneHotEncoder""",
     independence but could not classify only about
     65% of respondents who had low independence.
 
-    There are some limitations of the model that
-    need to be noted. First of all, there were
-    five financial independence classes that were.
+    One limitation is that the original five financial
+    independence categories were combined into two
+    classes for this analysis. Although this made
+    binary classification possible, it also removed
+    some of the differences between respondents'
+    levels of financial independence.
 
     Class imbalance is also present in the data as
     about 76% of participants fall into the high
