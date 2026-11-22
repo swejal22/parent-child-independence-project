@@ -2307,7 +2307,8 @@ def adaboost():
         "adaboost_workflow.png",
         caption="Figure 2: AdaBoost sequential learning, observation reweighting, and weighted voting."
     )
-        st.header("2. Data Prep")
+    
+    st.header("2. Data Prep")
 
     st.markdown("""
     For training the AdaBoost model, the dataset from the
