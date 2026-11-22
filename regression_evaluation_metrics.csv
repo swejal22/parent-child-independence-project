@@ -1,0 +1,7 @@
+Model,Metric,Value
+Linear Regression,RMSE,0.87879473633275
+Linear Regression,MAE,0.5814656894719582
+Linear Regression,R-squared,0.5025247141497906
+Logistic Regression,Accuracy,0.8682432432432432
+Binary Naive Bayes,Accuracy,0.8648648648648649
+Majority-Class Baseline,Accuracy,0.7601351351351351
