@@ -2422,7 +2422,7 @@ def adaboost():
         f"({repo_url}adaboost_encoded_testing_data.csv)"
     )
 
-        st.header("3. Code")
+    st.header("3. Code")
 
     st.markdown("""
     Python programming language and scikit-learn package were utilized in creating and analyzing
