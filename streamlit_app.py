@@ -2459,7 +2459,7 @@ from sklearn.preprocessing import OneHotEncoder""",
         language="python"
     )
 
-        st.header("4. Results")
+    st.header("4. Results")
 
     st.subheader("Initial AdaBoost Model")
 
